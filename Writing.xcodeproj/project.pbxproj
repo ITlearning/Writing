@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A846801C26C568740064827E /* Cafe24Oneprettynight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */; };
 		A853379E26BFBDF20030906E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853379D26BFBDF20030906E /* AppDelegate.swift */; };
 		A85337A026BFBDF20030906E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853379F26BFBDF20030906E /* SceneDelegate.swift */; };
 		A85337A226BFBDF20030906E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85337A126BFBDF20030906E /* ViewController.swift */; };
@@ -29,7 +30,6 @@
 		A88F1FB626C2E61C00FE3223 /* ChallengeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88F1FB526C2E61C00FE3223 /* ChallengeTableViewCell.swift */; };
 		A88F1FB926C3AD9C00FE3223 /* Writing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88F1FB826C3AD9C00FE3223 /* Writing.swift */; };
 		A88F1FBC26C4103900FE3223 /* HashTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */; };
-		A88F1FBD26C4103900FE3223 /* HashTagTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A88F1FBB26C4103900FE3223 /* HashTagTableViewCell.xib */; };
 		CDDFC5D2BD6B44319B775867 /* Pods_Writing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 708E6CAE1B3E286AD7127BBE /* Pods_Writing.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,7 +61,6 @@
 		A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Oneprettynight.ttf; sourceTree = "<group>"; };
 		A88F1FB826C3AD9C00FE3223 /* Writing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Writing.swift; sourceTree = "<group>"; };
 		A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTagTableViewCell.swift; sourceTree = "<group>"; };
-		A88F1FBB26C4103900FE3223 /* HashTagTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HashTagTableViewCell.xib; sourceTree = "<group>"; };
 		C949668AC1794F566681B940 /* Pods-Writing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Writing.release.xcconfig"; path = "Target Support Files/Pods-Writing/Pods-Writing.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,7 +100,6 @@
 				A853379B26BFBDF20030906E /* Products */,
 				7F1DD712A87A6764C4CD1840 /* Pods */,
 				0A45BA6248CD9A6D7F4A3DBC /* Frameworks */,
-				A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */,
 			);
 			sourceTree = "<group>";
 		};
@@ -134,7 +132,6 @@
 			children = (
 				A85337A326BFBDF20030906E /* Main.storyboard */,
 				A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */,
-				A88F1FBB26C4103900FE3223 /* HashTagTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -142,6 +139,7 @@
 		A85337BA26BFDDA10030906E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */,
 				A88F1FB226C2DD8A00FE3223 /* EtcControllers */,
 				A86D0B2726C170F5006EEC20 /* CustomTableViewCells */,
 				A85337C426C054750030906E /* TabBarControllers */,
@@ -257,7 +255,7 @@
 			files = (
 				A85337AA26BFBDF40030906E /* LaunchScreen.storyboard in Resources */,
 				A85337B426BFCD5C0030906E /* GoogleService-Info.plist in Resources */,
-				A88F1FBD26C4103900FE3223 /* HashTagTableViewCell.xib in Resources */,
+				A846801C26C568740064827E /* Cafe24Oneprettynight.ttf in Resources */,
 				A85337A726BFBDF40030906E /* Assets.xcassets in Resources */,
 				A85337A526BFBDF20030906E /* Main.storyboard in Resources */,
 			);
