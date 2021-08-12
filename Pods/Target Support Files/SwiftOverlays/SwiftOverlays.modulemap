@@ -1,0 +1,6 @@
+framework module SwiftOverlays {
+  umbrella header "SwiftOverlays-umbrella.h"
+
+  export *
+  module * { export * }
+}
