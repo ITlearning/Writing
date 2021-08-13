@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Firebase
 class HashTagTableViewCell: UITableViewCell {
 
     @IBOutlet weak var writingText: UILabel!
@@ -27,6 +27,7 @@ class HashTagTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
     
     
 }

@@ -11,4 +11,5 @@ struct Writing {
     let emtion : String
     let time: Double
     let writing: String
+    let documentID: String
 }

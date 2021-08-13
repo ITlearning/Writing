@@ -23,13 +23,13 @@ class PlusViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var introduceText: UILabel!
     
     var btnArray = [UIButton]()
-    var selectEmotion: String?
+    var selectEmotion: String = "선택하지않음"
     var dataBase = Firestore.firestore()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        writingTextField.font = UIFont(name: "Cafe24Oneprettynight", size: 15)
+        writingTextField.font = UIFont(name: "Cafe24Oneprettynight", size: 20)
         self.view.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         
         btnArray.append(happyButton)
@@ -93,11 +93,11 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         
         if let writing = writingTextField.text, let writingSender = Auth.auth().currentUser?.email {
 
-            if (!writing.isEmpty && writing != "이곳에 오늘 하루를 입력해주세요!") && selectEmotion != "#선택하지 않음" {
-                dataBase.collection("WritingDB").addDocument(data: [
+            if (!writing.isEmpty && writing != "이곳에 오늘 하루를 입력해주세요!") && selectEmotion != "선택하지않음" {
+                dataBase.collection((String(describing: Auth.auth().currentUser?.email))).addDocument(data: [
                     "sender": writingSender,
                     "writing": writing,
-                    "emotion": selectEmotion ?? "#선택하지 않음",
+                    "emotion": selectEmotion,
                     "time": Date().timeIntervalSince1970
                 ]) { error in
                     if let e = error {
@@ -129,12 +129,12 @@ class PlusViewController: UIViewController, UITextViewDelegate {
                     button.isSelected = true
                     button.tintColor = #colorLiteral(red: 0.7633925159, green: 0.4070249483, blue: 0.2914104231, alpha: 1)
                     button.backgroundColor = #colorLiteral(red: 0.7633925159, green: 0.4070249483, blue: 0.2914104231, alpha: 1)
-                    selectEmotion = button.titleLabel?.text
+                    selectEmotion = (button.titleLabel?.text)!
                 } else {
                     button.isSelected = false
                     button.tintColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
                     button.backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
-                    selectEmotion = "#선택하지 않음"
+                    selectEmotion = "선택하지않음"
                 }
             } else {
                 btn.isSelected = false

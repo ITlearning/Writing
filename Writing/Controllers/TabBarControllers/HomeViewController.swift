@@ -7,6 +7,8 @@
 
 import UIKit
 import MKRingProgressView
+import Firebase
+import FirebaseFirestore
 class HomeViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet weak var appNameLabel: UILabel!
@@ -17,6 +19,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var challengeButton: UIView!
     @IBOutlet weak var ringProgress: UIView!
     @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var challengeText: UIButton!
+    let dataBase = Firestore.firestore()
     var lastOffsetY: CGFloat = 0
     let ringProgressView = RingProgressView(frame: CGRect(x: 5, y: 5, width: 60, height: 60))
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -39,6 +43,13 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         ringProgressView.progress = 0.7
         
         ringProgress.addSubview(ringProgressView)
+        CircleStatus()
+    }
+    
+    
+    
+    func CircleStatus() {
+        //dataBase.
     }
     
     
