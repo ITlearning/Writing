@@ -53,7 +53,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         ringProgress.addSubview(ringProgressView)
         CircleStatus()
         contribute()
-        print(writing)
         
     }
     
@@ -83,8 +82,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func contribute() {
+        var tmp = [Int](repeating: 0, count: 31)
         dataBase.collection((String(describing: Auth.auth().currentUser?.email))).order(by: "time").addSnapshotListener { QuertSnapshot, error in
-            self.writing = [Int](repeating: 0, count: 31)
             if let e = error {
                 print("문제가 발생 했읍니다.\(e)")
             } else {
@@ -102,14 +101,18 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                             let today = Int(serverDay)
                             let timeInterval = TimeInterval(today)
                             let day = Date(timeIntervalSince1970: timeInterval)
-                            print(Int(date.string(from: day))!)
-                            self.writing[Int(date.string(from: day))!-1] += 1
+                            print(Int(date.string(from: day))!-1)
+                            tmp[Int(date.string(from: day))!-1] += 1
                         }
                     }
                 }
             }
         }
     }
+    
+    // 하... 계속 배열의 카운팅이 안된다. 아니 되긴 하는데, 이게 메서드 밖으로 나가면 그냥 정보가 다 사라진다.
+    // 개빡돈다........하...
+    // 일단 여기까지 하자.
     
     func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         return true
