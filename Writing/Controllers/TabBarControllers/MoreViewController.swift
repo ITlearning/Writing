@@ -10,22 +10,20 @@ import Firebase
 class MoreViewController: UIViewController {
 
 
+    @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var emailTextLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        logoutButton.layer.backgroundColor = #colorLiteral(red: 0.70618031, green: 0.2750103616, blue: 0.3301646756, alpha: 1)
+        callEmail()
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func callEmail() {
+        let user = Auth.auth().currentUser?.email
+        emailTextLabel.text = user!
     }
-    */
 
     @IBAction func logoutButton(_ sender: UIButton) {
         do {

@@ -28,7 +28,7 @@ class HashTagViewController: UIViewController {
     var writing: [Writing] = []
     var btnArray = [UIButton]()
     let dataBase = Firestore.firestore()
-    var emotionStatus: String?
+    var emotionStatus: String = "선택안됨"
     override func viewDidLoad() {
         super.viewDidLoad()
         hashTagTableView.delegate = self
@@ -72,10 +72,10 @@ class HashTagViewController: UIViewController {
                 }
             }
             self.writing.remove(at: sender.tag)
-            if self.emotionStatus! == "선택안됨" {
+            if self.emotionStatus == "선택안됨" {
                 self.hashTagTableView.reloadData()
             } else {
-                self.update("emotion", emotionType: self.emotionStatus!)
+                self.update("emotion", emotionType: self.emotionStatus)
             }
             if self.writing.count == 0 {
                 self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
@@ -104,7 +104,7 @@ class HashTagViewController: UIViewController {
                 button.tintColor = #colorLiteral(red: 0.7633925159, green: 0.4070249483, blue: 0.2914104231, alpha: 1)
                 button.backgroundColor = #colorLiteral(red: 0.7633925159, green: 0.4070249483, blue: 0.2914104231, alpha: 1)
                 emotionStatus = (button.titleLabel?.text)!
-                update("emotion", emotionType: emotionStatus!)
+                update("emotion", emotionType: emotionStatus)
              } else {
                 button.isSelected = false
                 button.tintColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)

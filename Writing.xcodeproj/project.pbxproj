@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A815D1BB26C6A7A4000B397E /* TimeWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A815D1BA26C6A7A4000B397E /* TimeWriting.swift */; };
+		A815D1C226C91728000B397E /* Month.swift in Sources */ = {isa = PBXBuildFile; fileRef = A815D1C126C91728000B397E /* Month.swift */; };
 		A846801C26C568740064827E /* Cafe24Oneprettynight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */; };
 		A853379E26BFBDF20030906E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853379D26BFBDF20030906E /* AppDelegate.swift */; };
 		A85337A026BFBDF20030906E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853379F26BFBDF20030906E /* SceneDelegate.swift */; };
@@ -36,6 +38,8 @@
 /* Begin PBXFileReference section */
 		3C425209CF90B62A713D1A13 /* Pods-Writing.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Writing.debug.xcconfig"; path = "Target Support Files/Pods-Writing/Pods-Writing.debug.xcconfig"; sourceTree = "<group>"; };
 		708E6CAE1B3E286AD7127BBE /* Pods_Writing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Writing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A815D1BA26C6A7A4000B397E /* TimeWriting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWriting.swift; sourceTree = "<group>"; };
+		A815D1C126C91728000B397E /* Month.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Month.swift; sourceTree = "<group>"; };
 		A853379A26BFBDF20030906E /* Writing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Writing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A853379D26BFBDF20030906E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A853379F26BFBDF20030906E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +161,7 @@
 			children = (
 				A86D0B0F26C10B98006EEC20 /* ErrorModel.swift */,
 				A88F1FB826C3AD9C00FE3223 /* Writing.swift */,
+				A815D1BA26C6A7A4000B397E /* TimeWriting.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 		A85337C426C054750030906E /* TabBarControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A815D1C126C91728000B397E /* Month.swift */,
 				A86D0B1B26C147F1006EEC20 /* HomeViewController.swift */,
 				A86D0B1D26C147F8006EEC20 /* SearchViewController.swift */,
 				A86D0B1F26C147FF006EEC20 /* PlusViewController.swift */,
@@ -318,6 +324,7 @@
 				A85337BF26C02C830030906E /* LoginViewController.swift in Sources */,
 				A88F1FBC26C4103900FE3223 /* HashTagTableViewCell.swift in Sources */,
 				A86D0B2026C147FF006EEC20 /* PlusViewController.swift in Sources */,
+				A815D1C226C91728000B397E /* Month.swift in Sources */,
 				A85337B826BFDD8C0030906E /* SignUpViewController.swift in Sources */,
 				A88F1FB926C3AD9C00FE3223 /* Writing.swift in Sources */,
 				A85337B626BFD78D0030906E /* StartViewController.swift in Sources */,
@@ -326,6 +333,7 @@
 				A853379E26BFBDF20030906E /* AppDelegate.swift in Sources */,
 				A86D0B2226C1480F006EEC20 /* HashTagViewController.swift in Sources */,
 				A88F1FB626C2E61C00FE3223 /* ChallengeTableViewCell.swift in Sources */,
+				A815D1BB26C6A7A4000B397E /* TimeWriting.swift in Sources */,
 				A85337A026BFBDF20030906E /* SceneDelegate.swift in Sources */,
 				A86D0B1A26C14295006EEC20 /* MainViewController.swift in Sources */,
 			);

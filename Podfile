@@ -12,6 +12,7 @@ target 'Writing' do
   pod 'SwiftOverlays', '~> 5.0.1'
   pod 'Tabman', '~> 2.11'
   pod 'MKRingProgressView'
+  pod 'LSHContributionView'
   # Pods for Writing
 
 end

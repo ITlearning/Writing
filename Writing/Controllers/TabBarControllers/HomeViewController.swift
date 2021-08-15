@@ -9,6 +9,7 @@ import UIKit
 import MKRingProgressView
 import Firebase
 import FirebaseFirestore
+import LSHContributionView
 class HomeViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet weak var appNameLabel: UILabel!
@@ -16,11 +17,16 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var subLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    @IBOutlet weak var contributionView: UIView!
     @IBOutlet weak var challengeButton: UIView!
     @IBOutlet weak var ringProgress: UIView!
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var challengeText: UIButton!
     let dataBase = Firestore.firestore()
+    let month = Month()
+    var dataSquare: [[Int]] = []
+    var writing = [Int](repeating: 0, count: 31)
+    
     var lastOffsetY: CGFloat = 0
     let ringProgressView = RingProgressView(frame: CGRect(x: 5, y: 5, width: 60, height: 60))
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -30,6 +36,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(month.setNumber())
         self.view.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         appNameLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         subLabel.textColor = #colorLiteral(red: 0.9306344697, green: 0.9306344697, blue: 0.9306344697, alpha: 1)
@@ -44,14 +52,64 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         
         ringProgress.addSubview(ringProgressView)
         CircleStatus()
+        contribute()
+        print(writing)
+        
     }
     
     
     
     func CircleStatus() {
-        //dataBase.
+        let contribution = LSHContributionView(frame: CGRect(x:20 , y: 0, width: 283, height: 150))
+        let m = month.setNumber()
+        var tmp: [Int] = []
+        for i in 1...31 {
+            if i % 10 != 0 {
+                tmp.append(0)
+            } else {
+                dataSquare.append(tmp)
+                tmp = []
+            }
+        }
+        if !tmp.isEmpty {
+            dataSquare.append(tmp)
+        }
+        
+        
+        contribution.data = dataSquare
+        contribution.colorScheme = "Default"
+        contributionView.addSubview(contribution)
+        contribution.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
     }
     
+    func contribute() {
+        dataBase.collection((String(describing: Auth.auth().currentUser?.email))).order(by: "time").addSnapshotListener { QuertSnapshot, error in
+            self.writing = [Int](repeating: 0, count: 31)
+            if let e = error {
+                print("문제가 발생 했읍니다.\(e)")
+            } else {
+                if let snapshotDocuments = QuertSnapshot?.documents {
+                    for doc in snapshotDocuments {
+                        let data = doc.data()
+                        if let serverDay = data["time"] as? Double {
+                            let date: DateFormatter = {
+                                let df = DateFormatter()
+                                df.locale = Locale(identifier: "ko_KR")
+                                df.timeZone = TimeZone(abbreviation: "KST")
+                                df.dateFormat = "dd"
+                                return df
+                            }()
+                            let today = Int(serverDay)
+                            let timeInterval = TimeInterval(today)
+                            let day = Date(timeIntervalSince1970: timeInterval)
+                            print(Int(date.string(from: day))!)
+                            self.writing[Int(date.string(from: day))!-1] += 1
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         return true

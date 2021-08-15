@@ -90,9 +90,9 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         if writingTextField.text.isEmpty {
             print("아무것도 입력하지 않았습니다.")
         }
-        
-        if let writing = writingTextField.text, let writingSender = Auth.auth().currentUser?.email {
 
+        if let writing = writingTextField.text, let writingSender = Auth.auth().currentUser?.email {
+            
             if (!writing.isEmpty && writing != "이곳에 오늘 하루를 입력해주세요!") && selectEmotion != "선택하지않음" {
                 dataBase.collection((String(describing: Auth.auth().currentUser?.email))).addDocument(data: [
                     "sender": writingSender,
