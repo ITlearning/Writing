@@ -14,13 +14,18 @@ class ChallengeViewController: UIViewController {
     
     // 레벨에 해당하는 개수
     let intro = [1, 5, 15, 30, 99]
-    
+    var select = 0
+    let hvc = HomeViewController()
     // 프로그래스 링
     let ringProgressView = [RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50)),RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50)),RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50)),RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50)),RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50))]
     
     // 현재 게시글 수 - 지속적인 업데이트가 필요한 숫자
     // 나중에 파베서버에서 개수 땡겨와서 업데이트
     let nowWriting: Double = 3
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        hvc.upDateIndex()
+    }
     
     @IBOutlet weak var challengeTableView: UITableView!
     override func viewDidLoad() {
@@ -30,10 +35,8 @@ class ChallengeViewController: UIViewController {
         challengeTableView.rowHeight = UITableView.automaticDimension
         challengeTableView.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         //challengeTableView.estimatedRowHeight = 600
-        
+        select = UserDefaults.standard.integer(forKey: "index")
     }
-    
-
 
 }
 
@@ -57,12 +60,30 @@ extension ChallengeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.circleLayer.addSubview(circle)
         cell.introduceLayer.text = "\(intro[indexPath.row])일 작성하기"
         cell.levelLayer.text = "LEVEL"+level[indexPath.row]
+        print(select)
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 200
-//    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "챌린지", message: "선택한 챌린지로 바꿀까요?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .destructive, handler: nil)
+        let selectAction = UIAlertAction(title: "선택", style: .default) { [self] _ in
+            self.select = indexPath.row
+            let UserDefaults = UserDefaults.standard
+            UserDefaults.set(indexPath.row ,forKey: "index")
+            guard let vc = self.storyboard?.instantiateViewController(identifier: "HomeView") as? HomeViewController else { return }
+            vc.index = indexPath.row
+            self.dismiss(animated: true)
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(selectAction)
+        present(alert, animated: true, completion: nil)
+        
+        
+    }
+    
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = UIColor.clear
