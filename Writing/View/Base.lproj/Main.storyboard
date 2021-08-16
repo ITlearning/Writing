@@ -789,9 +789,9 @@
         <!--Challenge View Controller-->
         <scene sceneID="xgf-OZ-Q8R">
             <objects>
-                <viewController storyboardIdentifier="ChallengeViewController" id="uCb-Dt-Q3Y" customClass="ChallengeViewController" customModule="Writing" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChallengeViewController" modalPresentationStyle="fullScreen" id="uCb-Dt-Q3Y" customClass="ChallengeViewController" customModule="Writing" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eZ4-fB-hrm">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xge-Rg-qIe">
@@ -873,12 +873,28 @@
                                     <outlet property="delegate" destination="uCb-Dt-Q3Y" id="xjx-HQ-gOz"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TcW-Xy-d0W">
+                                <rect key="frame" x="245" y="105" width="100" height="25"/>
+                                <color key="backgroundColor" red="0.39121606289999999" green="0.53054288620000001" blue="0.676872947" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="0pZ-Tw-IxG"/>
+                                    <constraint firstAttribute="width" constant="100" id="ynk-Ov-0yh"/>
+                                </constraints>
+                                <state key="normal" title="창 닫기">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelButton:" destination="uCb-Dt-Q3Y" eventType="touchUpInside" id="i0S-OT-DiY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WWq-mB-Fdx"/>
                         <color key="backgroundColor" red="0.22617047709999999" green="0.30570782140000002" blue="0.38609930479999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="TcW-Xy-d0W" firstAttribute="top" secondItem="WWq-mB-Fdx" secondAttribute="top" constant="105" id="04U-Jd-IEw"/>
                             <constraint firstItem="xge-Rg-qIe" firstAttribute="top" secondItem="WWq-mB-Fdx" secondAttribute="top" constant="44" id="Ra2-SC-u6J"/>
                             <constraint firstItem="xge-Rg-qIe" firstAttribute="leading" secondItem="WWq-mB-Fdx" secondAttribute="leading" constant="28" id="Wzv-4E-9pI"/>
+                            <constraint firstItem="WWq-mB-Fdx" firstAttribute="trailing" secondItem="TcW-Xy-d0W" secondAttribute="trailing" constant="30" id="YCM-zw-Nwa"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="AZS-tU-08K"/>
