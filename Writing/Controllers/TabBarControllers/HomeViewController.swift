@@ -10,44 +10,51 @@ import MKRingProgressView
 import Firebase
 import FirebaseFirestore
 import LSHContributionView
-class HomeViewController: UIViewController, UIScrollViewDelegate {
 
+class HomeViewController: UIViewController, UIScrollViewDelegate {
+    // UILabel
     @IBOutlet weak var appNameLabel: UILabel!
-    @IBOutlet weak var buttonLayout: UIButton!
+    @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var subLabel: UILabel!
-    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var greenLabel: UILabel!
-    
+    @IBOutlet weak var activityGraph: UILabel!
     @IBOutlet weak var challengeUpdateText: UILabel!
+    
+    // UIButton
+    @IBOutlet weak var buttonLayout: UIButton!
+    @IBOutlet weak var challengeText: UIButton!
+    
+    // UIView
     @IBOutlet weak var contributionView: UIView!
     @IBOutlet weak var challengeButton: UIView!
     @IBOutlet weak var ringProgress: UIView!
-    @IBOutlet weak var textLabel: UILabel!
-    @IBOutlet weak var challengeText: UIButton!
-    @IBOutlet weak var activityGraph: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    
+    
     let dataBase = Firestore.firestore()
     let month = Month()
+    let ringProgressView = RingProgressView(frame: CGRect(x: 5, y: 5, width: 60, height: 60))
+    let dayArray = [1,5,15,30,99]
+    
+    var lastOffsetY: CGFloat = 0
+    var num: Int = 0
     var dataSquare: [[Int]] = []
     var writing = [Int]()
     var index: Int = UserDefaults.standard.integer(forKey: "index")
-    let dayArray = [1,5,15,30,99]
-    var lastOffsetY: CGFloat = 0
-    var num: Int = 0
-    var test: String = ""
-    let ringProgressView = RingProgressView(frame: CGRect(x: 5, y: 5, width: 60, height: 60))
+    
+    
+    //MARK: - Status Bar 색 설정
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    
+    //MARK: - 뷰가 나왔을 때
     override func viewDidAppear(_ animated: Bool) {
         contribute()
         greenLabelUpdate()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +77,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     
-    
+    //MARK: - 잔디 세팅
     func greenLabelUpdate() {
         self.dataSquare = []
         let m = month.setNumber()
@@ -88,6 +95,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    //MARK: - 파이어베이스 서버 땡겨오기
     func contribute() {
         self.index = UserDefaults.standard.integer(forKey: "index")
         print("index \(self.index)")
@@ -135,7 +143,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                             self.challengeUpdateText.text = "\(self.dayArray[self.index])일 중 \(dayCount.count)일 달성!"
                             contribution.centerXAnchor.constraint(equalTo: self.contributionView.centerXAnchor).isActive = true
                             contribution.centerYAnchor.constraint(equalTo: self.contributionView.centerYAnchor).isActive = true
-
+                            
+                            // 챌린지 뷰 컨트롤러로 실시간 작성개수 넘기기
                             guard let vc = self.storyboard?.instantiateViewController(identifier: "ChallengeViewController") as? ChallengeViewController else { return }
                             vc.nowWriting = Double(dayCount.count)
                             
@@ -147,7 +156,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                             
                             ringProgress.addSubview(ringProgressView)
                             
-                            print(m)
+                            // 코드를 통한 오토레이아웃 설정
                             if m <= 30 {
                                 contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 10).isActive = true
                                 contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -10).isActive = true
@@ -165,6 +174,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                             
                             contribution.backgroundColor = .clear
                             self.contributionView.layer.cornerRadius = 10
+                            
+                            // 원하는 위치 Radius 설정
                             self.contributionView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMaxXMaxYCorner)
                             
                         }
@@ -175,24 +186,16 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     
-    
+    // status Bar 터치시 위로 올라가게 설정
     func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         return true
     }
     
+    
+    // 벨 버튼
     @IBAction func bellButton(_ sender: UIButton) {
         print("Good")
         
     }
-    @IBAction func button(_ sender: Any) {
-        index = UserDefaults.standard.integer(forKey: "index")
-        print(index)
-    }
-}
-
-
-extension HomeViewController : UIAdaptivePresentationControllerDelegate{
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        print("ㅎㅇ")
-    }
+    
 }

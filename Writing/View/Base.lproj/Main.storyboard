@@ -675,7 +675,6 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K98-2x-aLt">
                                                         <rect key="frame" x="8" y="8" width="329" height="116"/>
                                                         <connections>
-                                                            <action selector="button:" destination="WPr-JB-3m5" eventType="touchUpInside" id="D09-fC-A8S"/>
                                                             <segue destination="uCb-Dt-Q3Y" kind="show" identifier="HomeView" id="Cth-nZ-cXd"/>
                                                         </connections>
                                                     </button>

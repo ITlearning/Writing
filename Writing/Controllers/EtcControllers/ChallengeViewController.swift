@@ -16,6 +16,7 @@ class ChallengeViewController: UIViewController {
     
     // 레벨에 해당하는 개수
     let intro = [1, 5, 15, 30, 99]
+    var text = ["1일 작성하기", "5일 작성하기", "15일 작성하기", "30일 작성하기", "99일 작성하기"]
     var select = 0
     // 프로그래스 링
     let ringProgressView = [RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50)),RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50)),RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50)),RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50)),RingProgressView(frame: CGRect(x: 10, y: 10, width: 50, height: 50))]
@@ -23,14 +24,15 @@ class ChallengeViewController: UIViewController {
     // 현재 게시글 수 - 지속적인 업데이트가 필요한 숫자
     // 나중에 파베서버에서 개수 땡겨와서 업데이트
     var nowWriting: Double = 3
+    @IBOutlet weak var challengeTableView: UITableView!
     
-    override func viewDidDisappear(_ animated: Bool) {
-        print("닫힙니다")
-        
-        //hvc.contribute()
+    //MARK: - 뷰가 보여지기 전
+    override func viewWillAppear(_ animated: Bool) {
+        update()
+        self.challengeTableView.reloadData()
     }
     
-    @IBOutlet weak var challengeTableView: UITableView!
+    //MARK: - 뷰 초기 세팅
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,11 +44,26 @@ class ChallengeViewController: UIViewController {
         select = UserDefaults.standard.integer(forKey: "index")
     }
 
+    //MARK: - 취소버튼
     @IBAction func cancelButton(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
+    
+    //MARK: - 작성완료 업데이트
+    func update() {
+        for i in 0..<5 {
+            if nowWriting / Double(intro[i]) >= 1 {
+                text[i] = "작성 완료!"
+            }else {
+                text[i] = "\(intro[i])일 작성하기"
+            }
+        }
+        print(text)
+    }
+    
 }
 
+//MARK: - 테이블 뷰 세팅
 extension ChallengeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -65,17 +82,9 @@ extension ChallengeViewController: UITableViewDelegate, UITableViewDataSource {
         circle.ringWidth = 8
         print(nowWriting/Double(intro[indexPath.row]))
         
-        
-        
-        // 아직 챌린지 깻으면 도전 성공 안뜬다.
-        // 확인하자.
-        
         circle.progress = nowWriting/Double(intro[indexPath.row])
         cell.circleLayer.addSubview(circle)
-        if nowWriting/Double(intro[indexPath.row]) >= 1 {
-            cell.introduceLayer.text = "챌린지 도전 성공!"
-        }
-        cell.introduceLayer.text = "\(intro[indexPath.row])일 작성하기"
+        cell.introduceLayer.text = text[indexPath.row]
         cell.levelLayer.text = "LEVEL"+level[indexPath.row]
         print(select)
         return cell

@@ -12,12 +12,16 @@ import NotificationBannerSwift
 class PlusViewController: UIViewController, UITextViewDelegate {
 
     
-    
+    // UITextView
     @IBOutlet weak var writingTextField: UITextView!
+    
+    // UIButton
     @IBOutlet weak var happyButton: UIButton!
     @IBOutlet weak var sadButton: UIButton!
     @IBOutlet weak var boringButton: UIButton!
     @IBOutlet weak var noneButton: UIButton!
+    
+    // UILabel
     @IBOutlet weak var writingMainText: UILabel!
     @IBOutlet weak var writingSubText: UILabel!
     @IBOutlet weak var introduceText: UILabel!
@@ -31,6 +35,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
 
         writingTextField.font = UIFont(name: "Cafe24Oneprettynight", size: 20)
         self.view.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
+        
         
         btnArray.append(happyButton)
         btnArray.append(sadButton)
@@ -47,12 +52,14 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         placeholderSetting()
     }
     
+    //MARK: - 플레이스 홀더 세팅
     func placeholderSetting() {
         self.writingTextField.delegate = self
         writingTextField.text = "이곳에 오늘 하루를 입력해주세요!"
         writingTextField.textColor = UIColor.lightGray
     }
     
+    //MARK: - 텍스트 뷰에서 작성이 시작됐을 때 설정
     func textViewDidBeginEditing(_ textView: UITextView) {
         if writingTextField.textColor == UIColor.lightGray {
             writingTextField.text = nil
@@ -60,6 +67,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    //MARK: - 텍스트 뷰에서 작성이 끝났을 때 설정
     func textViewDidEndEditing(_ textView: UITextView) {
         if writingTextField.text.isEmpty {
             writingTextField.text = "이곳에 오늘 하루를 입력해주세요!"
@@ -67,6 +75,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    //MARK: - 버튼 설정
     func buttonSetting() {
         happyButton.backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
         happyButton.tintColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
@@ -84,7 +93,8 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         noneButton.tintColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
         noneButton.layer.cornerRadius = 20
     }
-
+    
+    //MARK: - 전송 버튼
     @IBAction func sendButton(_ sender: UIButton) {
         
         if writingTextField.text.isEmpty {
@@ -120,7 +130,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
     }
     
     
-
+    //MARK: - 감정 선택 버튼 세팅
     @IBAction func selectOptionBtnAction(_ sender: UIButton) {
            for btn in btnArray {
             guard let button = sender as? UIButton else { return }
