@@ -13,6 +13,8 @@ target 'Writing' do
   pod 'Tabman', '~> 2.11'
   pod 'MKRingProgressView'
   pod 'LSHContributionView'
+  pod 'YPImagePicker'
+  pod 'Firebase/Storage'
   # Pods for Writing
 
 end

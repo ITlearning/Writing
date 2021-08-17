@@ -9,6 +9,8 @@ import UIKit
 import FirebaseFirestore
 import Firebase
 import NotificationBannerSwift
+import YPImagePicker
+
 class PlusViewController: UIViewController, UITextViewDelegate {
 
     
@@ -25,10 +27,15 @@ class PlusViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var writingMainText: UILabel!
     @IBOutlet weak var writingSubText: UILabel!
     @IBOutlet weak var introduceText: UILabel!
+    @IBOutlet weak var selectImageView: UIImageView!
     
+    let storage = Storage.storage()
+    var selectImage: UIImage?
     var btnArray = [UIButton]()
     var selectEmotion: String = "선택하지않음"
     var dataBase = Firestore.firestore()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,13 +101,30 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         noneButton.layer.cornerRadius = 20
     }
     
+    func uploadImage(img: UIImage) {
+        var data = Data()
+        data = img.jpegData(compressionQuality: 0.8)!
+        let filePath = "\(String(describing: Auth.auth().currentUser?.email))/image"
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/png"
+        storage.reference().child(filePath).putData(data, metadata:  metaData) {
+            (metaData,error) in if let error = error {
+                print("에러 \(error)")
+                return
+            } else {
+                self.selectImageView.image = UIImage(systemName: "photo.fill")
+                print("성공!")
+            }
+        }
+    }
+    
     //MARK: - 전송 버튼
     @IBAction func sendButton(_ sender: UIButton) {
-        
+        let image = selectImage
+        uploadImage(img: image!)
         if writingTextField.text.isEmpty {
             print("아무것도 입력하지 않았습니다.")
         }
-
         if let writing = writingTextField.text, let writingSender = Auth.auth().currentUser?.email {
             
             if (!writing.isEmpty && writing != "이곳에 오늘 하루를 입력해주세요!") && selectEmotion != "선택하지않음" {
@@ -152,5 +176,28 @@ class PlusViewController: UIViewController, UITextViewDelegate {
                 btn.tintColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
             }
         }
+    }
+    
+    
+    
+    @IBAction func photoSelectButton(_ sender: UIButton) {
+        let picker = YPImagePicker()
+        
+        picker.didFinishPicking { [unowned picker] items, _ in
+            if let photo = items.singlePhoto {
+                print("카메라 이미지 소스 : \(photo.fromCamera)")
+                print("최종적으로 선택한 이미지: \(photo.image)")
+                print("오리지날 이미지: \(photo.originalImage)")
+                print("변경한 이미지 : \(photo.modifiedImage)")
+                print("이미지의 메타 데이터: \(String(describing: photo.exifMeta))")
+                
+                self.selectImageView.image = photo.image
+                self.selectImage = photo.image
+            }
+            
+            picker.dismiss(animated: true, completion: nil)
+        }
+        
+        present(picker, animated: true, completion: nil)
     }
 }
