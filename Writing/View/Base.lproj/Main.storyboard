@@ -361,6 +361,7 @@
         <!--Hash Tag View Controller-->
         <scene sceneID="bzP-Q1-Pf3">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dxD-Uq-SkY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="HashTagView" id="b1a-KF-Az2" customClass="HashTagViewController" customModule="Writing" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Cch-Dn-nvI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -382,15 +383,15 @@
                                 <rect key="frame" x="0.0" y="134" width="375" height="533"/>
                                 <color key="backgroundColor" red="0.22617047709999999" green="0.30570782140000002" blue="0.38609930479999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="hashTagCell" rowHeight="120" id="5L7-wE-3ia" customClass="HashTagTableViewCell" customModule="Writing" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.5" width="375" height="120"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="hashTagCell" rowHeight="119" id="5L7-wE-3ia" customClass="HashTagTableViewCell" customModule="Writing" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="24.5" width="375" height="119"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5L7-wE-3ia" id="YFi-pv-pOy">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9fg-EY-P5E">
-                                                    <rect key="frame" x="7" y="7.5" width="361" height="104"/>
+                                                    <rect key="frame" x="7" y="7.5" width="361" height="103"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#모르겠음" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bda-bZ-zor">
                                                             <rect key="frame" x="8" y="8" width="94" height="28"/>
@@ -408,15 +409,6 @@
                                                                 <constraint firstAttribute="width" constant="214" id="t2U-sg-q6p"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="15"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WfW-nP-QJf">
-                                                            <rect key="frame" x="8" y="44" width="345" height="18"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="345" id="qtH-Kb-SeC"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" name="Cafe24Oneprettynight" family="Cafe24 Oneprettynight" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -440,28 +432,35 @@
                                                                 <action selector="buttonClicked:" destination="b1a-KF-Az2" eventType="touchUpInside" id="Hq3-EE-Qkr"/>
                                                             </connections>
                                                         </button>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v40-Cn-PUg">
+                                                            <rect key="frame" x="8" y="47" width="345" height="36"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="345" id="jFl-dp-i7R"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Cafe24Oneprettynight" family="Cafe24 Oneprettynight" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstItem="2u3-wr-kc7" firstAttribute="top" secondItem="bda-bZ-zor" secondAttribute="bottom" constant="1" id="64K-9m-W5B"/>
-                                                        <constraint firstAttribute="trailing" secondItem="WfW-nP-QJf" secondAttribute="trailing" constant="8" id="6ci-nL-mVI"/>
                                                         <constraint firstAttribute="trailing" secondItem="VSA-0O-HTV" secondAttribute="trailing" constant="37" id="BI7-Iu-zpF"/>
-                                                        <constraint firstAttribute="bottom" secondItem="WfW-nP-QJf" secondAttribute="bottom" constant="42" id="CKj-X7-hwR"/>
                                                         <constraint firstItem="AqJ-Es-Bfl" firstAttribute="leading" secondItem="bda-bZ-zor" secondAttribute="trailing" constant="225" id="EMt-UF-4tJ"/>
+                                                        <constraint firstAttribute="trailing" secondItem="v40-Cn-PUg" secondAttribute="trailing" constant="8" id="J0c-sE-h8D"/>
+                                                        <constraint firstItem="v40-Cn-PUg" firstAttribute="leading" secondItem="9fg-EY-P5E" secondAttribute="leading" constant="8" id="JIg-Rs-d5S"/>
                                                         <constraint firstAttribute="trailing" secondItem="2u3-wr-kc7" secondAttribute="trailing" constant="9" id="Jek-C3-cw1"/>
-                                                        <constraint firstItem="WfW-nP-QJf" firstAttribute="top" secondItem="2u3-wr-kc7" secondAttribute="bottom" constant="3" id="LoK-I8-Baz"/>
                                                         <constraint firstItem="VSA-0O-HTV" firstAttribute="leading" secondItem="bda-bZ-zor" secondAttribute="trailing" constant="8" symbolic="YES" id="M5y-iS-zBG"/>
-                                                        <constraint firstItem="WfW-nP-QJf" firstAttribute="top" secondItem="2u3-wr-kc7" secondAttribute="bottom" constant="5" id="OUo-qs-d5U"/>
+                                                        <constraint firstItem="v40-Cn-PUg" firstAttribute="top" secondItem="2u3-wr-kc7" secondAttribute="bottom" constant="8" id="OG6-lh-uPo"/>
                                                         <constraint firstItem="AqJ-Es-Bfl" firstAttribute="top" secondItem="9fg-EY-P5E" secondAttribute="top" constant="11" id="Wec-Vx-oeq"/>
                                                         <constraint firstItem="2u3-wr-kc7" firstAttribute="top" secondItem="bda-bZ-zor" secondAttribute="bottom" constant="1" id="Wlx-zF-Kih"/>
                                                         <constraint firstItem="bda-bZ-zor" firstAttribute="leading" secondItem="9fg-EY-P5E" secondAttribute="leading" constant="8" id="YLB-in-Qhd"/>
                                                         <constraint firstItem="VSA-0O-HTV" firstAttribute="top" secondItem="9fg-EY-P5E" secondAttribute="top" constant="16" id="Yag-M6-uVX"/>
+                                                        <constraint firstAttribute="bottom" secondItem="v40-Cn-PUg" secondAttribute="bottom" constant="20" id="azO-48-qa2"/>
                                                         <constraint firstItem="bda-bZ-zor" firstAttribute="top" secondItem="9fg-EY-P5E" secondAttribute="top" constant="8" id="b0M-SZ-VoV"/>
                                                         <constraint firstItem="2u3-wr-kc7" firstAttribute="leading" secondItem="9fg-EY-P5E" secondAttribute="leading" constant="8" id="djt-MR-nwZ"/>
                                                         <constraint firstItem="2u3-wr-kc7" firstAttribute="top" secondItem="AqJ-Es-Bfl" secondAttribute="bottom" constant="4" id="iS0-7C-AXY"/>
-                                                        <constraint firstItem="WfW-nP-QJf" firstAttribute="top" secondItem="2u3-wr-kc7" secondAttribute="bottom" constant="5" id="kSH-yf-DpP"/>
                                                         <constraint firstAttribute="trailing" secondItem="AqJ-Es-Bfl" secondAttribute="trailing" constant="7" id="lZ7-2C-JWe"/>
-                                                        <constraint firstItem="WfW-nP-QJf" firstAttribute="leading" secondItem="9fg-EY-P5E" secondAttribute="leading" constant="8" id="v7a-jo-WJh"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -474,16 +473,20 @@
                                             <color key="backgroundColor" red="0.22617047709999999" green="0.30570782140000002" blue="0.38609930479999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="9fg-EY-P5E" firstAttribute="leading" secondItem="YFi-pv-pOy" secondAttribute="leading" constant="7" id="2oN-pP-jyR"/>
+                                                <constraint firstAttribute="bottom" secondItem="9fg-EY-P5E" secondAttribute="bottom" constant="8.5" id="6vg-yw-BbQ"/>
                                                 <constraint firstAttribute="trailing" secondItem="9fg-EY-P5E" secondAttribute="trailing" constant="7" id="MOh-qm-lmm"/>
+                                                <constraint firstAttribute="trailing" secondItem="9fg-EY-P5E" secondAttribute="trailing" constant="7" id="Tql-pk-Szj"/>
                                                 <constraint firstAttribute="bottom" secondItem="9fg-EY-P5E" secondAttribute="bottom" constant="8.5" id="Wc0-JS-maw"/>
                                                 <constraint firstItem="9fg-EY-P5E" firstAttribute="top" secondItem="YFi-pv-pOy" secondAttribute="top" constant="7.5" id="rKU-Pf-jOu"/>
+                                                <constraint firstItem="9fg-EY-P5E" firstAttribute="leading" secondItem="YFi-pv-pOy" secondAttribute="leading" constant="7" id="tsw-wn-6MK"/>
+                                                <constraint firstItem="9fg-EY-P5E" firstAttribute="top" secondItem="YFi-pv-pOy" secondAttribute="top" constant="7.5" id="udA-o9-nTn"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="dayLabel" destination="VSA-0O-HTV" id="KBY-TH-TmA"/>
                                             <outlet property="hashTagLabel" destination="bda-bZ-zor" id="9rv-rb-Hco"/>
                                             <outlet property="trashButton" destination="AqJ-Es-Bfl" id="G6P-Zo-YeB"/>
-                                            <outlet property="writingText" destination="WfW-nP-QJf" id="CHb-De-h0d"/>
+                                            <outlet property="writingText" destination="v40-Cn-PUg" id="dvY-Bc-Iqc"/>
                                             <outlet property="writingView" destination="9fg-EY-P5E" id="Kw0-OX-zoN"/>
                                         </connections>
                                     </tableViewCell>
@@ -615,7 +618,6 @@
                         <outlet property="viewSubName" destination="pyh-fo-sQF" id="y6c-BO-hh6"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dxD-Uq-SkY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6200.8000000000002" y="-842.42878560719646"/>
         </scene>

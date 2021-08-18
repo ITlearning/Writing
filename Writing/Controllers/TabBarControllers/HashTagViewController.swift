@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import NotificationBannerSwift
+
 class HashTagViewController: UIViewController {
 
     
@@ -29,6 +30,8 @@ class HashTagViewController: UIViewController {
     var btnArray = [UIButton]()
     let dataBase = Firestore.firestore()
     var emotionStatus: String = "선택안됨"
+    let storage = Storage.storage()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         hashTagTableView.delegate = self
@@ -155,13 +158,22 @@ class HashTagViewController: UIViewController {
                         for doc in snapshotDocuments {
                             let id = doc.documentID.description
                             let data = doc.data()
-                            
                             if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
+                                    /*
+                                    let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
+                                    pathRef.getData(maxSize: 1 * 360 * 360) { data, error in
+                                        if let error = error {
+                                            print("사진 가져오기 실패")
+                                        } else {
+                                             image = data
+                                        }
+                                    }
+                                    */
                                 let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id)
                                 self.writing.append(newWriting)
-                                
-                                self.hashTagTableView.reloadData()
                                     
+                                self.hashTagTableView.reloadData()
+                                        
                                 let indexPath = IndexPath(row: self.writing.count-1, section: 0)
                                 self.hashTagTableView.scrollToRow(at: indexPath, at: .top, animated: true)
                             }
@@ -193,9 +205,18 @@ class HashTagViewController: UIViewController {
                         for doc in snapshotDocuments {
                             let id = doc.documentID.description
                             let data = doc.data()
-                            
+                            var image: Data?
                             if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
                                 if emotionSender == emotionType {
+                                    /*
+                                    let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
+                                    pathRef.getData(maxSize: 1 * 360 * 360) { data, error in
+                                        if let error = error {
+                                            print("사진 가져오기 실패")
+                                        } else {
+                                             image = data
+                                        }
+                                    }*/
                                     let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id)
                                     self.writing.append(newWriting)
                                     
@@ -246,6 +267,8 @@ extension HashTagViewController: UITableViewDelegate, UITableViewDataSource {
         cell.writingText.textColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         cell.hashTagLabel.text = writing.emtion
         cell.hashTagLabel.textColor = #colorLiteral(red: 0.1834903555, green: 0.1986690177, blue: 0.2207198435, alpha: 1)
+        
+        
         let date: DateFormatter = {
             let df = DateFormatter()
             df.locale = Locale(identifier: "ko_KR")

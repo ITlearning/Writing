@@ -10,7 +10,7 @@ import FirebaseFirestore
 import Firebase
 import NotificationBannerSwift
 import YPImagePicker
-
+import SwiftOverlays
 class PlusViewController: UIViewController, UITextViewDelegate {
 
     
@@ -101,10 +101,12 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         noneButton.layer.cornerRadius = 20
     }
     
-    func uploadImage(img: UIImage) {
+    func uploadImage(img: UIImage, time: Double) {
+        let text = "사진 업로드 중.."
+        self.showWaitOverlayWithText(text)
         var data = Data()
         data = img.jpegData(compressionQuality: 0.8)!
-        let filePath = "\(String(describing: Auth.auth().currentUser?.email))/image"
+        let filePath = "\(String(describing: Auth.auth().currentUser?.email))/\(time)"
         let metaData = StorageMetadata()
         metaData.contentType = "image/png"
         storage.reference().child(filePath).putData(data, metadata:  metaData) {
@@ -112,7 +114,11 @@ class PlusViewController: UIViewController, UITextViewDelegate {
                 print("에러 \(error)")
                 return
             } else {
-                self.selectImageView.image = UIImage(systemName: "photo.fill")
+                self.removeAllOverlays()
+                let banner = NotificationBanner(title: "등록 성공!", subtitle: "소중한 하루정리를 안전하게 업로드했어요! 👍🏻",style: .success)
+                banner.show()
+                self.writingTextField.text = ""
+                self.selectImageView.image = nil
                 print("성공!")
             }
         }
@@ -120,30 +126,38 @@ class PlusViewController: UIViewController, UITextViewDelegate {
     
     //MARK: - 전송 버튼
     @IBAction func sendButton(_ sender: UIButton) {
-        let image = selectImage
-        uploadImage(img: image!)
+        
         if writingTextField.text.isEmpty {
             print("아무것도 입력하지 않았습니다.")
         }
         if let writing = writingTextField.text, let writingSender = Auth.auth().currentUser?.email {
             
             if (!writing.isEmpty && writing != "이곳에 오늘 하루를 입력해주세요!") && selectEmotion != "선택하지않음" {
+                let time = Date().timeIntervalSince1970
                 dataBase.collection((String(describing: Auth.auth().currentUser?.email))).addDocument(data: [
                     "sender": writingSender,
                     "writing": writing,
                     "emotion": selectEmotion,
-                    "time": Date().timeIntervalSince1970
+                    "time": time
                 ]) { error in
                     if let e = error {
                         print("업로드 중 에러 발생\(e)")
                     } else {
-                        let banner = NotificationBanner(title: "등록 성공!", subtitle: "소중한 하루정리를 안전하게 업로드했어요! 👍🏻",style: .success)
-                        banner.show()
+                        DispatchQueue.main.async {
+                            let image = self.selectImage
+                            if image != nil {
+                                self.uploadImage(img: image!, time: time)
+                                self.selectImage = nil
+                            } else {
+                                self.writingTextField.text = ""
+                                let banner = NotificationBanner(title: "등록 성공!", subtitle: "소중한 하루정리를 안전하게 업로드했어요! 👍🏻",style: .success)
+                                banner.show()
+                            }
+                        }
+                        
+                        
                         
                         print("데이터 전송 성공!")
-                        DispatchQueue.main.async {
-                            self.writingTextField.text = ""
-                        }
                     }
                 }
             } else {
