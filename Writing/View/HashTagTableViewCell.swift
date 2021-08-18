@@ -14,6 +14,7 @@ class HashTagTableViewCell: UITableViewCell {
     @IBOutlet weak var hashTagLabel: UILabel!
     @IBOutlet weak var writingView: UIView!
     @IBOutlet weak var trashButton: UIButton!
+    @IBOutlet weak var textImageView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         writingText.layer.cornerRadius = 10

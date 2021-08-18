@@ -143,17 +143,17 @@ class PlusViewController: UIViewController, UITextViewDelegate {
                     if let e = error {
                         print("업로드 중 에러 발생\(e)")
                     } else {
-                        DispatchQueue.main.async {
-                            let image = self.selectImage
-                            if image != nil {
-                                self.uploadImage(img: image!, time: time)
-                                self.selectImage = nil
-                            } else {
-                                self.writingTextField.text = ""
-                                let banner = NotificationBanner(title: "등록 성공!", subtitle: "소중한 하루정리를 안전하게 업로드했어요! 👍🏻",style: .success)
+                        
+                        let image = self.selectImage
+                        if image != nil {
+                            self.uploadImage(img: image!, time: time)
+                            self.selectImage = nil
+                        } else {
+                            self.writingTextField.text = ""
+                            let banner = NotificationBanner(title: "등록 성공!", subtitle: "소중한 하루정리를 안전하게 업로드했어요! 👍🏻",style: .success)
                                 banner.show()
-                            }
                         }
+
                         
                         
                         

@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import NotificationBannerSwift
+import FirebaseStorageUI
 
 class HashTagViewController: UIViewController {
 
@@ -31,6 +32,11 @@ class HashTagViewController: UIViewController {
     let dataBase = Firestore.firestore()
     var emotionStatus: String = "선택안됨"
     let storage = Storage.storage()
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        originalUpdate()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +63,7 @@ class HashTagViewController: UIViewController {
     //MARK: - 일기 불러오기
     func loadWriting() {
         originalUpdate()
+        hashTagTableView.reloadData()
     }
     
     @IBAction func buttonClicked(_ sender: UIButton) {
@@ -158,18 +165,13 @@ class HashTagViewController: UIViewController {
                         for doc in snapshotDocuments {
                             let id = doc.documentID.description
                             let data = doc.data()
+                            var image: String?
                             if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
-                                    /*
-                                    let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
-                                    pathRef.getData(maxSize: 1 * 360 * 360) { data, error in
-                                        if let error = error {
-                                            print("사진 가져오기 실패")
-                                        } else {
-                                             image = data
-                                        }
-                                    }
-                                    */
-                                let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id)
+                                    
+                                let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
+                                print(pathRef)
+                                    
+                                let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: pathRef)
                                 self.writing.append(newWriting)
                                     
                                 self.hashTagTableView.reloadData()
@@ -205,19 +207,15 @@ class HashTagViewController: UIViewController {
                         for doc in snapshotDocuments {
                             let id = doc.documentID.description
                             let data = doc.data()
-                            var image: Data?
+                            var image: String?
                             if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
                                 if emotionSender == emotionType {
-                                    /*
+                                    
+                                    
                                     let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
-                                    pathRef.getData(maxSize: 1 * 360 * 360) { data, error in
-                                        if let error = error {
-                                            print("사진 가져오기 실패")
-                                        } else {
-                                             image = data
-                                        }
-                                    }*/
-                                    let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id)
+                                    
+                                    print(pathRef)
+                                    let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: pathRef)
                                     self.writing.append(newWriting)
                                     
                                     self.hashTagTableView.reloadData()
@@ -261,12 +259,13 @@ extension HashTagViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let writing = writing[indexPath.row]
-        
+        print(writing)
         let cell: HashTagTableViewCell = tableView.dequeueReusableCell(withIdentifier: "hashTagCell", for: indexPath) as! HashTagTableViewCell
         cell.writingText.text = writing.writing
         cell.writingText.textColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         cell.hashTagLabel.text = writing.emtion
         cell.hashTagLabel.textColor = #colorLiteral(red: 0.1834903555, green: 0.1986690177, blue: 0.2207198435, alpha: 1)
+        cell.textImageView.sd_setImage(with: writing.data)
         
         
         let date: DateFormatter = {
