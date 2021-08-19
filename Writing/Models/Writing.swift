@@ -8,11 +8,11 @@
 import UIKit
 import FirebaseStorage
 import FirebaseStorageUI
-
 struct Writing {
     let emtion : String
     let time: Double
     let writing: String
     let documentID: String
-    let data: StorageReference
+    let data: String
+    let deleteID: StorageReference
 }

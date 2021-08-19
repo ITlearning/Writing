@@ -10,7 +10,7 @@ import Firebase
 import FirebaseFirestore
 import NotificationBannerSwift
 import FirebaseStorageUI
-
+import Kingfisher
 class HashTagViewController: UIViewController {
 
     
@@ -32,10 +32,8 @@ class HashTagViewController: UIViewController {
     let dataBase = Firestore.firestore()
     var emotionStatus: String = "선택안됨"
     let storage = Storage.storage()
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        originalUpdate()
+    override func viewDidAppear(_ animated: Bool) {
+        loadWriting()
     }
     
     override func viewDidLoad() {
@@ -47,7 +45,7 @@ class HashTagViewController: UIViewController {
         self.view.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         
         hashTagTableView.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
-        loadWriting()
+        
         viewMainName.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         viewSubName.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
@@ -63,30 +61,46 @@ class HashTagViewController: UIViewController {
     //MARK: - 일기 불러오기
     func loadWriting() {
         originalUpdate()
-        hashTagTableView.reloadData()
     }
     
     @IBAction func buttonClicked(_ sender: UIButton) {
-        print(sender.tag)
+        //print(sender.tag)
+        
         let alert = UIAlertController(title: "일기삭제", message: "선택한 일기를 삭제할까요?", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "취소", style: .cancel,handler: nil)
         let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
-            print(self.writing[sender.tag].time)
+            //(self.writing[sender.tag].time)
+            
+            
             self.dataBase.collection((String(describing: Auth.auth().currentUser?.email))).document(self.writing[sender.tag].documentID).delete() { err in
                 if let err = err {
                     let banner = NotificationBanner(title: "에러발생", subtitle: "\(err)!", style: .danger)
                     banner.show()
                 } else {
+                    print("삭제 완료")
                     let banner = NotificationBanner(title: "삭제완료", subtitle: "일기를 성공적으로 삭제했어요!", style: .success)
                     banner.show()
                 }
             }
-            self.writing.remove(at: sender.tag)
+            let point = sender.convert(CGPoint.zero, to: self.hashTagTableView)
+            guard let indexPath = self.hashTagTableView.indexPathForRow(at: point) else {return}
+            self.writing.remove(at: indexPath.row)
+            print(self.writing)
+            
             if self.emotionStatus == "선택안됨" {
-                self.hashTagTableView.reloadData()
+                print("아니 일로들어가냐?")
+                self.hashTagTableView.beginUpdates()
+                self.hashTagTableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .left)
+                self.hashTagTableView.endUpdates()
+                //self.hashTagTableView.reloadData()
             } else {
-                self.update("emotion", emotionType: self.emotionStatus)
+                self.hashTagTableView.beginUpdates()
+                self.hashTagTableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .left)
+                self.hashTagTableView.endUpdates()
+                //self.hashTagTableView.deleteRows(at: [self.selectIndexPath], with: .fade)
+                //self.update("emotion", emotionType: self.emotionStatus)
             }
+            
             if self.writing.count == 0 {
                 self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
                 self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -100,7 +114,6 @@ class HashTagViewController: UIViewController {
         alert.addAction(deleteAction)
         present(alert, animated: true, completion: nil)
     }
-    
     
     
     
@@ -150,6 +163,17 @@ class HashTagViewController: UIViewController {
         noneButton.layer.cornerRadius = 3
     }
     
+    func downLoad(_ pathRef: StorageReference, completion: @escaping((String)-> Void)) {
+        var strURL = ""
+        pathRef.downloadURL(completion: { url, error in
+            if let urlText = url?.absoluteString {
+                strURL = urlText
+                completion(strURL)
+            } else {
+                completion(strURL)
+            }
+        })
+    }
     
     //MARK: - 테이블 뷰 업데이트 목록들
     func originalUpdate() {
@@ -162,39 +186,50 @@ class HashTagViewController: UIViewController {
                     print("문제가 발생했습니다. \(e)")
                 } else {
                     if let snapshotDocuments = QuertSnapshot?.documents {
+                        var cnt = 0
                         for doc in snapshotDocuments {
                             let id = doc.documentID.description
                             let data = doc.data()
-                            var image: String?
+                            var cURL: String = ""
                             if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
-                                    
+                                cnt += 1
                                 let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
+                                
                                 print(pathRef)
-                                    
-                                let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: pathRef)
-                                self.writing.append(newWriting)
-                                    
+                                let d = self.downLoad(pathRef) { url in
+                                    cURL = url
+                                    print("url: \(url)")
+                                }
+                                print("d:\(d)")
+                                self.writing.append(Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: cURL, deleteID: pathRef))
+                                self.writing.sort(by: {$0.time < $1.time})
                                 self.hashTagTableView.reloadData()
-                                        
+                                print("cURL:\(cURL)")
                                 let indexPath = IndexPath(row: self.writing.count-1, section: 0)
                                 self.hashTagTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                                
                             }
-                            // 일기를 아무것도 작성하지 않았다면
-                            if self.writing.count == 0 {
-                                self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
-                                self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                                self.nothingText.numberOfLines = 0
-                            } else {
-                                self.nothingText.text = ""
-                            }
+                        }
+                        if cnt == 0 {
+                            print("여길로 들어왔찡")
+                            self.writing.removeAll()
+                            self.hashTagTableView.reloadData()
+                            self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
+                            self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                            self.nothingText.numberOfLines = 0
+                        } else {
+                            self.nothingText.text = ""
                         }
                     }
                 }
             }
     }
     
+    
+    
     //MARK: - 테이블 뷰 소팅
     func update(_ sort: String, emotionType: String) {
+        self.writing.removeAll()
         dataBase.collection((String(describing: Auth.auth().currentUser?.email)))
             .order(by: sort)
             .addSnapshotListener { QuertSnapshot, error in
@@ -203,37 +238,45 @@ class HashTagViewController: UIViewController {
                 if let e = error {
                     print("문제가 발생했습니다. \(e)")
                 } else {
+                    
                     if let snapshotDocuments = QuertSnapshot?.documents {
+                        var cnt = 0
                         for doc in snapshotDocuments {
                             let id = doc.documentID.description
                             let data = doc.data()
+                            
                             var image: String?
                             if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
                                 if emotionSender == emotionType {
-                                    
-                                    
+                                    cnt += 1
+                                    var link: URL?
                                     let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
                                     
                                     print(pathRef)
-                                    let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: pathRef)
-                                    self.writing.append(newWriting)
-                                    
-                                    self.hashTagTableView.reloadData()
-                                    
-                                    let indexPath = IndexPath(row: self.writing.count-1, section: 0)
-                                    self.hashTagTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                                    let newWriting = self.downLoad(pathRef) { url in
+                                        let wri = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: url, deleteID: pathRef)
+                                        
+                                        self.writing.append(wri)
+                                        self.writing.sort(by: {$0.time < $1.time})
+                                        self.hashTagTableView.reloadData()
+                                        
+                                        let indexPath = IndexPath(row: self.writing.count-1, section: 0)
+                                        self.hashTagTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                                        
+                                    }
                                 }
+                                
                             }
-                            // 일기를 아무것도 작성하지 않았다면
-                            if self.writing.count == 0 {
-                                self.writing.removeAll()
-                                self.hashTagTableView.reloadData()
-                                self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
-                                self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                                self.nothingText.numberOfLines = 0
-                            } else {
-                                self.nothingText.text = ""
-                            }
+                        }
+                        if cnt == 0 {
+                            print("여길로 들어왔찡")
+                            self.writing.removeAll()
+                            self.hashTagTableView.reloadData()
+                            self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
+                            self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                            self.nothingText.numberOfLines = 0
+                        } else {
+                            self.nothingText.text = ""
                         }
                     }
                 }
@@ -243,29 +286,29 @@ class HashTagViewController: UIViewController {
 }
 
 //MARK: - 테이블 뷰 익스텐션
-var SelectedIndexPath = IndexPath()
 extension HashTagViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         SelectedIndexPath = indexPath
-    }
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 300
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(writing)
+        print("writing Len : \(writing.count)")
         return writing.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let writing = writing[indexPath.row]
-        print(writing)
+        print("writing Count: \(writing.count)")
         let cell: HashTagTableViewCell = tableView.dequeueReusableCell(withIdentifier: "hashTagCell", for: indexPath) as! HashTagTableViewCell
+        let writing = writing[indexPath.row]
+        print()
+        
         cell.writingText.text = writing.writing
         cell.writingText.textColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         cell.hashTagLabel.text = writing.emtion
         cell.hashTagLabel.textColor = #colorLiteral(red: 0.1834903555, green: 0.1986690177, blue: 0.2207198435, alpha: 1)
-        cell.textImageView.sd_setImage(with: writing.data)
+        cell.textImageView.kf.setImage(with: URL(string:writing.data))
         
         
         let date: DateFormatter = {
@@ -275,12 +318,14 @@ extension HashTagViewController: UITableViewDelegate, UITableViewDataSource {
             df.dateFormat = "yyyy년 MM월dd일 HH시mm분"
             return df
         }()
+        
         let today = Int(writing.time)
         let timeInterval = TimeInterval(today)
         let day = Date(timeIntervalSince1970: timeInterval)
         cell.trashButton.tag = indexPath.row
         cell.dayLabel.text = "\(date.string(from: day))"
         cell.dayLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+
         return cell
     }
     

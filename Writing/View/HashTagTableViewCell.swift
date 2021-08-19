@@ -18,10 +18,17 @@ class HashTagTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         writingText.layer.cornerRadius = 10
+        
         //writingText.font = UIFont(name: "Cafe24Oneprettynight", size: 20)
         
     }
-
+    override func prepareForReuse() {
+        self.writingText.text = .none
+        self.dayLabel.text = .none
+        self.hashTagLabel.text = .none
+        self.writingText.text = .none
+        self.textImageView.image = nil
+    }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
