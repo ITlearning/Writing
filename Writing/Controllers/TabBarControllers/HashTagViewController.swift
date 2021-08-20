@@ -43,7 +43,8 @@ class HashTagViewController: UIViewController {
         // 테이블 뷰 셀 나누는 칸 없애기
         hashTagTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         self.view.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
-        
+        hashTagTableView.rowHeight = UITableView.automaticDimension
+        hashTagTableView.estimatedRowHeight = 360
         hashTagTableView.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         
         viewMainName.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -71,43 +72,48 @@ class HashTagViewController: UIViewController {
         let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
             //(self.writing[sender.tag].time)
             
-            
-            self.dataBase.collection((String(describing: Auth.auth().currentUser?.email))).document(self.writing[sender.tag].documentID).delete() { err in
-                if let err = err {
-                    let banner = NotificationBanner(title: "에러발생", subtitle: "\(err)!", style: .danger)
-                    banner.show()
+            if let writingSender = Auth.auth().currentUser?.email {
+                self.dataBase.collection(writingSender).document(self.writing[sender.tag].documentID).delete() { err in
+                    if let err = err {
+                        let banner = NotificationBanner(title: "에러발생", subtitle: "\(err)!", style: .danger)
+                        banner.show()
+                    } else {
+                        print("삭제 완료")
+                       
+                    }
+                }
+                self.writing[sender.tag].deleteID.delete { error in
+                    if let error = error {
+                        print("에러발생 \(error)")
+                    } else {
+                        let banner = NotificationBanner(title: "삭제완료", subtitle: "일기를 성공적으로 삭제했어요!", style: .success)
+                        banner.show()
+                    }
+                }
+                let point = sender.convert(CGPoint.zero, to: self.hashTagTableView)
+                guard let indexPath = self.hashTagTableView.indexPathForRow(at: point) else {return}
+                self.writing.remove(at: sender.tag)
+                print(self.writing)
+                //self.hashTagTableView.beginUpdates()
+                //self.hashTagTableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .left)
+                //self.hashTagTableView.endUpdates()
+                if self.emotionStatus == "선택안됨" {
+                    
+                    self.hashTagTableView.reloadData()
                 } else {
-                    print("삭제 완료")
-                    let banner = NotificationBanner(title: "삭제완료", subtitle: "일기를 성공적으로 삭제했어요!", style: .success)
-                    banner.show()
+                    self.update("emotion", emotionType: self.emotionStatus)
+                    
+                }
+                
+                if self.writing.count == 0 {
+                    self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
+                    self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                    self.nothingText.numberOfLines = 0
+                } else {
+                    self.nothingText.text = ""
                 }
             }
-            let point = sender.convert(CGPoint.zero, to: self.hashTagTableView)
-            guard let indexPath = self.hashTagTableView.indexPathForRow(at: point) else {return}
-            self.writing.remove(at: indexPath.row)
-            print(self.writing)
             
-            if self.emotionStatus == "선택안됨" {
-                print("아니 일로들어가냐?")
-                self.hashTagTableView.beginUpdates()
-                self.hashTagTableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .left)
-                self.hashTagTableView.endUpdates()
-                //self.hashTagTableView.reloadData()
-            } else {
-                self.hashTagTableView.beginUpdates()
-                self.hashTagTableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .left)
-                self.hashTagTableView.endUpdates()
-                //self.hashTagTableView.deleteRows(at: [self.selectIndexPath], with: .fade)
-                //self.update("emotion", emotionType: self.emotionStatus)
-            }
-            
-            if self.writing.count == 0 {
-                self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
-                self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                self.nothingText.numberOfLines = 0
-            } else {
-                self.nothingText.text = ""
-            }
         }
         
         alert.addAction(cancelAction)
@@ -177,111 +183,109 @@ class HashTagViewController: UIViewController {
     
     //MARK: - 테이블 뷰 업데이트 목록들
     func originalUpdate() {
-        dataBase.collection((String(describing: Auth.auth().currentUser?.email)))
-            .order(by: "time")
-            .addSnapshotListener { QuertSnapshot, error in
-                self.writing = []
-                
-                if let e = error {
-                    print("문제가 발생했습니다. \(e)")
-                } else {
-                    if let snapshotDocuments = QuertSnapshot?.documents {
-                        var cnt = 0
-                        for doc in snapshotDocuments {
-                            let id = doc.documentID.description
-                            let data = doc.data()
-                            var cURL: String = ""
-                            if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
-                                cnt += 1
-                                let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
+        if let writingSender = Auth.auth().currentUser?.email {
+            dataBase.collection(writingSender)
+                .order(by: "time")
+                .addSnapshotListener { QuertSnapshot, error in
+                    self.writing = []
+                    
+                    if let e = error {
+                        print("문제가 발생했습니다. \(e)")
+                    } else {
+                        if let snapshotDocuments = QuertSnapshot?.documents {
+                            var cnt = 0
+                            for doc in snapshotDocuments {
+                                let id = doc.documentID.description
+                                let data = doc.data()
                                 
-                                print(pathRef)
-                                let d = self.downLoad(pathRef) { url in
-                                    cURL = url
-                                    print("url: \(url)")
+                                if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
+                                    cnt += 1
+                                    let pathRef = self.storage.reference(withPath: "\(writingSender)/\(timeSender)")
+                                    let makeurl = "https://firebasestorage.googleapis.com/v0/b/\(pathRef.bucket)/o/\(writingSender)%2F\(pathRef.name)?alt=media"
+                                    
+                                    // 지금 클로저 안에서만 url이 보여지므로 이걸 어떻게 밖으로 꺼낼것인지, 아니면 다른 방법으로 url을 생성하든지 해야한다.
+                                    self.downLoad(pathRef) { url in
+                                        print("Original URL : \(url)")
+                                    }
+                                    print("makeURL: \(makeurl)")
+                                    self.writing.append(Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: makeurl, deleteID: pathRef))
+                                    self.writing.sort(by: {$0.time < $1.time})
+                                    self.hashTagTableView.reloadData()
+                                    let indexPath = IndexPath(row: self.writing.count-1, section: 0)
+                                    self.hashTagTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                                    
                                 }
-                                print("d:\(d)")
-                                self.writing.append(Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: cURL, deleteID: pathRef))
-                                self.writing.sort(by: {$0.time < $1.time})
-                                self.hashTagTableView.reloadData()
-                                print("cURL:\(cURL)")
-                                let indexPath = IndexPath(row: self.writing.count-1, section: 0)
-                                self.hashTagTableView.scrollToRow(at: indexPath, at: .top, animated: true)
-                                
                             }
-                        }
-                        if cnt == 0 {
-                            print("여길로 들어왔찡")
-                            self.writing.removeAll()
-                            self.hashTagTableView.reloadData()
-                            self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
-                            self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                            self.nothingText.numberOfLines = 0
-                        } else {
-                            self.nothingText.text = ""
+                            if cnt == 0 {
+                                print("여길로 들어왔찡")
+                                self.writing.removeAll()
+                                self.hashTagTableView.reloadData()
+                                self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
+                                self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                                self.nothingText.numberOfLines = 0
+                            } else {
+                                self.nothingText.text = ""
+                            }
                         }
                     }
                 }
-            }
+        }
+        
     }
     
     
     
     //MARK: - 테이블 뷰 소팅
     func update(_ sort: String, emotionType: String) {
-        self.writing.removeAll()
-        dataBase.collection((String(describing: Auth.auth().currentUser?.email)))
-            .order(by: sort)
-            .addSnapshotListener { QuertSnapshot, error in
-                self.writing = []
-                
-                if let e = error {
-                    print("문제가 발생했습니다. \(e)")
-                } else {
+        if let writingSender = Auth.auth().currentUser?.email {
+            dataBase.collection(writingSender)
+                .order(by: sort)
+                .addSnapshotListener { QuertSnapshot, error in
+                    self.writing = []
                     
-                    if let snapshotDocuments = QuertSnapshot?.documents {
-                        var cnt = 0
-                        for doc in snapshotDocuments {
-                            let id = doc.documentID.description
-                            let data = doc.data()
-                            
-                            var image: String?
-                            if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
-                                if emotionSender == emotionType {
-                                    cnt += 1
-                                    var link: URL?
-                                    let pathRef = self.storage.reference(withPath: "\(String(describing: Auth.auth().currentUser?.email))/\(timeSender)")
-                                    
-                                    print(pathRef)
-                                    let newWriting = self.downLoad(pathRef) { url in
-                                        let wri = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: url, deleteID: pathRef)
+                    if let e = error {
+                        print("문제가 발생했습니다. \(e)")
+                    } else {
+                        
+                        if let snapshotDocuments = QuertSnapshot?.documents {
+                            var cnt = 0
+                            for doc in snapshotDocuments {
+                                let id = doc.documentID.description
+                                let data = doc.data()
+                                
+                                if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
+                                    if emotionSender == emotionType {
+                                        cnt += 1
+                                        let pathRef = self.storage.reference(withPath: "\(writingSender)/\(timeSender)")
+                                        let makeurl = "https://firebasestorage.googleapis.com/v0/b/\(pathRef.bucket)/o/\(writingSender)%2F\(pathRef.name)?alt=media"
                                         
-                                        self.writing.append(wri)
+                                        let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: makeurl, deleteID: pathRef)
+                                        
+                                        self.writing.append(newWriting)
                                         self.writing.sort(by: {$0.time < $1.time})
                                         self.hashTagTableView.reloadData()
                                         
                                         let indexPath = IndexPath(row: self.writing.count-1, section: 0)
                                         self.hashTagTableView.scrollToRow(at: indexPath, at: .top, animated: true)
-                                        
                                     }
+                                    
                                 }
-                                
                             }
-                        }
-                        if cnt == 0 {
-                            print("여길로 들어왔찡")
-                            self.writing.removeAll()
-                            self.hashTagTableView.reloadData()
-                            self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
-                            self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                            self.nothingText.numberOfLines = 0
-                        } else {
-                            self.nothingText.text = ""
+                            if cnt == 0 {
+                                self.writing.removeAll()
+                                self.hashTagTableView.reloadData()
+                                self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
+                                self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                                self.nothingText.numberOfLines = 0
+                            } else {
+                                self.nothingText.text = ""
+                            }
                         }
                     }
                 }
-            }
+        }
     }
+    
     
 }
 
@@ -308,9 +312,25 @@ extension HashTagViewController: UITableViewDelegate, UITableViewDataSource {
         cell.writingText.textColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         cell.hashTagLabel.text = writing.emtion
         cell.hashTagLabel.textColor = #colorLiteral(red: 0.1834903555, green: 0.1986690177, blue: 0.2207198435, alpha: 1)
-        cell.textImageView.kf.setImage(with: URL(string:writing.data))
         
+        cell.textImageView.kf.indicatorType = .activity
+        let cache = ImageCache.default
+        let retry = DelayRetryStrategy(maxRetryCount: 5, retryInterval: .seconds(2))
+        cache.retrieveImage(forKey: writing.data, options: nil) { c in
+            switch c {
+            case .success(let value):
+                if let image = value.image {
+                    cell.textImageView.image = image
+                } else {
+                    cell.textImageView.kf.setImage(with: URL(string: writing.data), options: [.transition(.fade(0.2)), .forceTransition, .keepCurrentImageWhileLoading, .retryStrategy(retry)])
+                }
+            case .failure(let error):
+                print("이미지 에러: \(error)")
+                cell.ImageViewHeight.constant = cell.textImageView.frame.height - CGFloat(360)
+            }
+        }
         
+            
         let date: DateFormatter = {
             let df = DateFormatter()
             df.locale = Locale(identifier: "ko_KR")

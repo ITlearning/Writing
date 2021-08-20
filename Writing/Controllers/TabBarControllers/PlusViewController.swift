@@ -106,7 +106,10 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         self.showWaitOverlayWithText(text)
         var data = Data()
         data = img.jpegData(compressionQuality: 0.8)!
-        let filePath = "\(String(describing: Auth.auth().currentUser?.email))/\(time)"
+        
+        guard var filePath = Auth.auth().currentUser?.email else { return }
+        filePath += "/\(time)"
+        print("FilePath: \(filePath)")
         let metaData = StorageMetadata()
         metaData.contentType = "image/png"
         storage.reference().child(filePath).putData(data, metadata:  metaData) {
@@ -134,7 +137,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
             
             if (!writing.isEmpty && writing != "이곳에 오늘 하루를 입력해주세요!") && selectEmotion != "선택하지않음" {
                 let time = Date().timeIntervalSince1970
-                dataBase.collection((String(describing: Auth.auth().currentUser?.email))).addDocument(data: [
+                dataBase.collection(writingSender).addDocument(data: [
                     "sender": writingSender,
                     "writing": writing,
                     "emotion": selectEmotion,
@@ -149,6 +152,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
                             self.uploadImage(img: image!, time: time)
                             self.selectImage = nil
                         } else {
+                            
                             self.writingTextField.text = ""
                             let banner = NotificationBanner(title: "등록 성공!", subtitle: "소중한 하루정리를 안전하게 업로드했어요! 👍🏻",style: .success)
                                 banner.show()

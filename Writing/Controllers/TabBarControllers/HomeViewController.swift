@@ -86,6 +86,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
             if i % 10 != 0 {
                 tmp.append(0)
             } else {
+                tmp.append(0)
                 dataSquare.append(tmp)
                 tmp = []
             }
@@ -99,90 +100,93 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     func contribute() {
         self.index = UserDefaults.standard.integer(forKey: "index")
         print("index \(self.index)")
-        dataBase.collection((String(describing: Auth.auth().currentUser?.email))).order(by: "time").addSnapshotListener { [self] QuertSnapshot, error in
-            var dayCount: [Int] = []
-            self.greenLabelUpdate()
-            if let e = error {
-                print("문제가 발생 했읍니다.\(e)")
-            } else {
-                if let snapshotDocuments = QuertSnapshot?.documents {
-                    for doc in snapshotDocuments {
-                        let data = doc.data()
-                        if let serverDay = data["time"] as? Double {
-                            let date: DateFormatter = {
-                                let df = DateFormatter()
-                                df.locale = Locale(identifier: "ko_KR")
-                                df.timeZone = TimeZone(abbreviation: "KST")
-                                df.dateFormat = "dd"
-                                return df
-                            }()
-                            
-                            let today = Int(serverDay)
-                            let timeInterval = TimeInterval(today)
-                            let day = Date(timeIntervalSince1970: timeInterval)
-                            let num = Int(date.string(from: day))!
-                            //self.CircleStatus()
-                            if dayCount.contains(num) == false{
-                                dayCount.append(num)
+        if let writingSender = Auth.auth().currentUser?.email {
+            dataBase.collection(writingSender).order(by: "time").addSnapshotListener { [self] QuertSnapshot, error in
+                var dayCount: [Int] = []
+                self.greenLabelUpdate()
+                if let e = error {
+                    print("문제가 발생 했읍니다.\(e)")
+                } else {
+                    if let snapshotDocuments = QuertSnapshot?.documents {
+                        for doc in snapshotDocuments {
+                            let data = doc.data()
+                            if let serverDay = data["time"] as? Double {
+                                let date: DateFormatter = {
+                                    let df = DateFormatter()
+                                    df.locale = Locale(identifier: "ko_KR")
+                                    df.timeZone = TimeZone(abbreviation: "KST")
+                                    df.dateFormat = "dd"
+                                    return df
+                                }()
+                                
+                                let today = Int(serverDay)
+                                let timeInterval = TimeInterval(today)
+                                let day = Date(timeIntervalSince1970: timeInterval)
+                                let num = Int(date.string(from: day))!
+                                //self.CircleStatus()
+                                if dayCount.contains(num) == false{
+                                    dayCount.append(num)
+                                }
+                                if num <= 10 {
+                                    self.dataSquare[0][num-1] += 1
+                                } else if num <= 20 {
+                                    self.dataSquare[1][num-11] += 1
+                                } else if num <= 30 {
+                                    self.dataSquare[2][num-21] += 1
+                                }
+                                let contribution = LSHContributionView(frame: CGRect(x: 0, y: 0, width: 200, height: 130))
+                                contribution.translatesAutoresizingMaskIntoConstraints = false
+                                
+                                contribution.data = self.dataSquare
+                                contribution.colorScheme = "Default"
+                                let m
+                                    = self.month.setNumber()
+                                self.contributionView.addSubview(contribution)
+                                self.challengeUpdateText.text = "\(self.dayArray[self.index])일 중 \(dayCount.count)일 달성!"
+                                contribution.centerXAnchor.constraint(equalTo: self.contributionView.centerXAnchor).isActive = true
+                                contribution.centerYAnchor.constraint(equalTo: self.contributionView.centerYAnchor).isActive = true
+                                
+                                // 챌린지 뷰 컨트롤러로 실시간 작성개수 넘기기
+                                guard let vc = self.storyboard?.instantiateViewController(identifier: "ChallengeViewController") as? ChallengeViewController else { return }
+                                vc.nowWriting = Double(dayCount.count)
+                                
+                                ringProgressView.startColor = #colorLiteral(red: 0.00112261367, green: 0.7317003608, blue: 0.8825521469, alpha: 1)
+                                ringProgressView.endColor = #colorLiteral(red: 0.006783903111, green: 0.9808149934, blue: 0.8184377551, alpha: 1)
+                                ringProgressView.ringWidth = 8
+                                
+                                ringProgressView.progress = Double(dayCount.count)/Double(self.dayArray[self.index])
+                                
+                                ringProgress.addSubview(ringProgressView)
+                                
+                                // 코드를 통한 오토레이아웃 설정
+                                if m <= 30 {
+                                    contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 10).isActive = true
+                                    contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -10).isActive = true
+                                    contribution.topAnchor.constraint(equalTo: self.contributionView.topAnchor, constant: 10).isActive = true
+                                    contribution.bottomAnchor.constraint(equalTo: self.contributionView.bottomAnchor, constant: 0).isActive = true
+                                    contribution.heightAnchor.constraint(equalTo: self.contributionView.heightAnchor, constant: 20).isActive = true
+                                } else {
+                                    contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 20).isActive = true
+                                    contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -20).isActive = true
+                                    contribution.topAnchor.constraint(equalTo: self.contributionView.topAnchor, constant: 5).isActive = true
+                                    contribution.bottomAnchor.constraint(equalTo: self.contributionView.bottomAnchor, constant: -20).isActive = true
+                                    contribution.heightAnchor.constraint(equalTo: self.contributionView.heightAnchor, constant: 0).isActive = true
+                                    //contribution.widthAnchor.constraint(equalTo: self.contributionView.widthAnchor, constant: 50).isActive = true
+                                }
+                                
+                                contribution.backgroundColor = .clear
+                                self.contributionView.layer.cornerRadius = 10
+                                
+                                // 원하는 위치 Radius 설정
+                                self.contributionView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMaxXMaxYCorner)
+                                
                             }
-                            if num <= 10 {
-                                self.dataSquare[0][num-1] += 1
-                            } else if num <= 20 {
-                                self.dataSquare[1][num-11] += 1
-                            } else if num <= 30 {
-                                self.dataSquare[2][num-21] += 1
-                            }
-                            let contribution = LSHContributionView(frame: CGRect(x: 0, y: 0, width: 200, height: 130))
-                            contribution.translatesAutoresizingMaskIntoConstraints = false
-                            
-                            contribution.data = self.dataSquare
-                            contribution.colorScheme = "Default"
-                            let m
-                                = self.month.setNumber()
-                            self.contributionView.addSubview(contribution)
-                            self.challengeUpdateText.text = "\(self.dayArray[self.index])일 중 \(dayCount.count)일 달성!"
-                            contribution.centerXAnchor.constraint(equalTo: self.contributionView.centerXAnchor).isActive = true
-                            contribution.centerYAnchor.constraint(equalTo: self.contributionView.centerYAnchor).isActive = true
-                            
-                            // 챌린지 뷰 컨트롤러로 실시간 작성개수 넘기기
-                            guard let vc = self.storyboard?.instantiateViewController(identifier: "ChallengeViewController") as? ChallengeViewController else { return }
-                            vc.nowWriting = Double(dayCount.count)
-                            
-                            ringProgressView.startColor = #colorLiteral(red: 0.00112261367, green: 0.7317003608, blue: 0.8825521469, alpha: 1)
-                            ringProgressView.endColor = #colorLiteral(red: 0.006783903111, green: 0.9808149934, blue: 0.8184377551, alpha: 1)
-                            ringProgressView.ringWidth = 8
-                            
-                            ringProgressView.progress = Double(dayCount.count)/Double(self.dayArray[self.index])
-                            
-                            ringProgress.addSubview(ringProgressView)
-                            
-                            // 코드를 통한 오토레이아웃 설정
-                            if m <= 30 {
-                                contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 10).isActive = true
-                                contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -10).isActive = true
-                                contribution.topAnchor.constraint(equalTo: self.contributionView.topAnchor, constant: 10).isActive = true
-                                contribution.bottomAnchor.constraint(equalTo: self.contributionView.bottomAnchor, constant: 0).isActive = true
-                                contribution.heightAnchor.constraint(equalTo: self.contributionView.heightAnchor, constant: 20).isActive = true
-                            } else {
-                                contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 20).isActive = true
-                                contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -20).isActive = true
-                                contribution.topAnchor.constraint(equalTo: self.contributionView.topAnchor, constant: 5).isActive = true
-                                contribution.bottomAnchor.constraint(equalTo: self.contributionView.bottomAnchor, constant: -20).isActive = true
-                                contribution.heightAnchor.constraint(equalTo: self.contributionView.heightAnchor, constant: 0).isActive = true
-                                //contribution.widthAnchor.constraint(equalTo: self.contributionView.widthAnchor, constant: 50).isActive = true
-                            }
-                            
-                            contribution.backgroundColor = .clear
-                            self.contributionView.layer.cornerRadius = 10
-                            
-                            // 원하는 위치 Radius 설정
-                            self.contributionView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMaxXMaxYCorner)
-                            
                         }
                     }
                 }
             }
         }
+        
     }
     
     
@@ -199,3 +203,4 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
 }
+

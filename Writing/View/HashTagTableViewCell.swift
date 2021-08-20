@@ -15,10 +15,23 @@ class HashTagTableViewCell: UITableViewCell {
     @IBOutlet weak var writingView: UIView!
     @IBOutlet weak var trashButton: UIButton!
     @IBOutlet weak var textImageView: UIImageView!
+    @IBOutlet weak var ImageViewHeight: NSLayoutConstraint!
+    
+    internal var aspectConstraint: NSLayoutConstraint? {
+        didSet {
+            if oldValue != nil {
+                textImageView.removeConstraint(oldValue!)
+            }
+            if aspectConstraint != nil {
+                textImageView.addConstraint(aspectConstraint!)
+            }
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         writingText.layer.cornerRadius = 10
-        
+        //aspectConstraint = nil
         //writingText.font = UIFont(name: "Cafe24Oneprettynight", size: 20)
         
     }
@@ -36,6 +49,13 @@ class HashTagTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    
+    func setImageView(image: UIImage) {
+        let aspect = image.size.width / image.size.height
+        let constraint = NSLayoutConstraint(item: textImageView, attribute: .width, relatedBy: .equal, toItem: textImageView, attribute: .height, multiplier: aspect, constant: 0)
+        constraint.priority = UILayoutPriority(rawValue: 999)
+        aspectConstraint = constraint
+        textImageView.image = image
+        
+    }
     
 }
