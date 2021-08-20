@@ -22,6 +22,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var sadButton: UIButton!
     @IBOutlet weak var boringButton: UIButton!
     @IBOutlet weak var noneButton: UIButton!
+    @IBOutlet weak var photoAddButton: UIButton!
     
     // UILabel
     @IBOutlet weak var writingMainText: UILabel!
@@ -43,7 +44,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         writingTextField.font = UIFont(name: "Cafe24Oneprettynight", size: 20)
         self.view.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         
-        
+        photoAddButton.layer.cornerRadius = 5
         btnArray.append(happyButton)
         btnArray.append(sadButton)
         btnArray.append(boringButton)

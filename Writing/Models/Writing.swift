@@ -7,7 +7,6 @@
 
 import UIKit
 import FirebaseStorage
-import FirebaseStorageUI
 struct Writing {
     let emtion : String
     let time: Double

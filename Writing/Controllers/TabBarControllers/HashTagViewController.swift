@@ -9,7 +9,6 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import NotificationBannerSwift
-import FirebaseStorageUI
 import Kingfisher
 class HashTagViewController: UIViewController {
 

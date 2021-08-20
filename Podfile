@@ -15,7 +15,7 @@ target 'Writing' do
   pod 'LSHContributionView'
   pod 'YPImagePicker'
   pod 'Firebase/Storage'
-  pod 'FirebaseUI/Storage'
+  pod 'SquareFlowLayout'
   # Pods for Writing
 
 end

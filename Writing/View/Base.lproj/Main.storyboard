@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -149,22 +150,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="검색 뷰" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t8d-LI-xeF">
-                                <rect key="frame" x="163" y="283" width="49" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PF4-rD-XCz">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="PF4-rD-XCz">
+                                <rect key="frame" x="0.0" y="20" width="375" height="51"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="uWT-RR-EY9">
+                                <rect key="frame" x="0.0" y="71" width="375" height="596"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="TuE-vF-X31">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="KC9-GN-sPN">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="aJZ-PS-sUK">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="MGU-PF-roL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="uWT-RR-EY9" firstAttribute="bottom" secondItem="MGU-PF-roL" secondAttribute="bottom" id="BZV-Um-oYw"/>
+                            <constraint firstItem="PF4-rD-XCz" firstAttribute="leading" secondItem="MGU-PF-roL" secondAttribute="leading" id="OK9-Jo-5yI"/>
+                            <constraint firstItem="uWT-RR-EY9" firstAttribute="leading" secondItem="MGU-PF-roL" secondAttribute="leading" id="SAP-iP-7bl"/>
+                            <constraint firstItem="uWT-RR-EY9" firstAttribute="trailing" secondItem="MGU-PF-roL" secondAttribute="trailing" id="U3g-OX-7wb"/>
+                            <constraint firstItem="PF4-rD-XCz" firstAttribute="top" secondItem="MGU-PF-roL" secondAttribute="top" constant="20" id="a1e-eo-g8c"/>
+                            <constraint firstItem="uWT-RR-EY9" firstAttribute="top" secondItem="PF4-rD-XCz" secondAttribute="bottom" id="cOu-Ot-IQy"/>
+                            <constraint firstItem="uWT-RR-EY9" firstAttribute="top" secondItem="PF4-rD-XCz" secondAttribute="bottom" id="eI5-Uy-Onw"/>
+                            <constraint firstItem="PF4-rD-XCz" firstAttribute="trailing" secondItem="MGU-PF-roL" secondAttribute="trailing" id="j7g-X8-uwi"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="searchCollectionView" destination="uWT-RR-EY9" id="oA9-Cb-bve"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CKU-Or-Kya" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -303,9 +329,13 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gfc-NT-lgw">
-                                <rect key="frame" x="282" y="50" width="46" height="30"/>
+                                <rect key="frame" x="255" y="47" width="88" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <color key="backgroundColor" red="0.16430894660000001" green="0.41333980240000001" blue="0.44689723910000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="20"/>
+                                <state key="normal" title="사진 추가">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="photoSelectButton:" destination="xFo-vd-lAy" eventType="touchUpInside" id="KOY-qU-YdS"/>
                                 </connections>
@@ -347,6 +377,7 @@
                         <outlet property="happyButton" destination="p4J-vP-8Rv" id="wSe-DD-Kxn"/>
                         <outlet property="introduceText" destination="KGy-ib-A0c" id="clz-Yf-JgX"/>
                         <outlet property="noneButton" destination="so8-8A-CBL" id="IO7-D6-l7p"/>
+                        <outlet property="photoAddButton" destination="Gfc-NT-lgw" id="bjp-v7-Qpv"/>
                         <outlet property="sadButton" destination="O8w-T2-VfV" id="2EV-RA-EoQ"/>
                         <outlet property="selectImageView" destination="TWD-c9-hWc" id="vKk-Sx-rYQ"/>
                         <outlet property="writingMainText" destination="blF-AS-7fO" id="vJD-aj-X24"/>

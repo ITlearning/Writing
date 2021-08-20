@@ -258,11 +258,6 @@ PODS:
   - FirebaseStorage (8.3.0):
     - FirebaseCore (~> 8.0)
     - GTMSessionFetcher/Core (~> 1.5)
-  - FirebaseStorageUI (12.0.0):
-    - FirebaseStorage (~> 8.0)
-    - SDWebImage (~> 5.6)
-  - FirebaseUI/Storage (12.0.2):
-    - FirebaseStorageUI (~> 12.0)
   - GoogleDataTransport (9.1.0):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
@@ -323,10 +318,8 @@ PODS:
   - Pageboy (3.6.2)
   - PromisesObjC (2.0.0)
   - PryntTrimmerView (4.0.2)
-  - SDWebImage (5.11.1):
-    - SDWebImage/Core (= 5.11.1)
-  - SDWebImage/Core (5.11.1)
   - SnapKit (5.0.1)
+  - SquareFlowLayout (0.0.1)
   - SteviaLayout (4.7.3)
   - SwiftOverlays (5.0.1)
   - Tabman (2.11.1):
@@ -340,11 +333,11 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Firestore
   - Firebase/Storage
-  - FirebaseUI/Storage
   - IQKeyboardManagerSwift
   - LSHContributionView
   - MKRingProgressView
   - NotificationBannerSwift (~> 3.0.0)
+  - SquareFlowLayout
   - SwiftOverlays (~> 5.0.1)
   - Tabman (~> 2.11)
   - TextFieldEffects
@@ -360,8 +353,6 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseFirestore
     - FirebaseStorage
-    - FirebaseStorageUI
-    - FirebaseUI
     - GoogleDataTransport
     - GoogleUtilities
     - "gRPC-C++"
@@ -377,8 +368,8 @@ SPEC REPOS:
     - Pageboy
     - PromisesObjC
     - PryntTrimmerView
-    - SDWebImage
     - SnapKit
+    - SquareFlowLayout
     - SteviaLayout
     - SwiftOverlays
     - Tabman
@@ -394,8 +385,6 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 7e873baabcfaa9512f538554ae4fa0817aaafbdb
   FirebaseFirestore: f4f42828c6d82f6945575611c23dd343e0e7d0aa
   FirebaseStorage: ff380720c204593d98c3e5482e62ccfbb522f0c5
-  FirebaseStorageUI: 9f5b32264e77dc073dec45f00c5b3a77e5ca901e
-  FirebaseUI: b04b32ead3a6dcd5a50829e14b8f3f6d044d5d62
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
@@ -411,14 +400,14 @@ SPEC CHECKSUMS:
   Pageboy: cf121b9dd48c63f3f281b2a9ec93d02e0f23879b
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SquareFlowLayout: cde3486d3086fb7f95b303d9b90bb86aa9dd98b5
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   SwiftOverlays: ab459ea9194b0e96aaccaa00e9ead1bf6d46eef1
   Tabman: 792ac76fd1ec95af175c93db880a3c47cabedc91
   TextFieldEffects: 529b8aff706fb40f82c41c780c0777941a893796
   YPImagePicker: 6f410f475bd22fa8cd430495b54d4b2f15865c2d
 
-PODFILE CHECKSUM: b5e7cfdd3dd7a3bef6eb3219046f84c4576b7472
+PODFILE CHECKSUM: e5a47b596f63378e8d4a629ba73a91316ee86c73
 
 COCOAPODS: 1.10.1
