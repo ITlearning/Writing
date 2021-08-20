@@ -33,6 +33,8 @@
 		A88F1FB926C3AD9C00FE3223 /* Writing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88F1FB826C3AD9C00FE3223 /* Writing.swift */; };
 		A88F1FBC26C4103900FE3223 /* HashTagTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */; };
 		A8DAF71126CE310E00152B80 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A8DAF71026CE310E00152B80 /* Kingfisher */; };
+		A8DC1F2D26CFDFB800FA17C2 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DC1F2C26CFDFB800FA17C2 /* SearchCollectionViewCell.swift */; };
+		A8DC1F2F26D00DBD00FA17C2 /* PhotoWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DC1F2E26D00DBD00FA17C2 /* PhotoWriting.swift */; };
 		CDDFC5D2BD6B44319B775867 /* Pods_Writing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 708E6CAE1B3E286AD7127BBE /* Pods_Writing.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +68,8 @@
 		A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Oneprettynight.ttf; sourceTree = "<group>"; };
 		A88F1FB826C3AD9C00FE3223 /* Writing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Writing.swift; sourceTree = "<group>"; };
 		A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTagTableViewCell.swift; sourceTree = "<group>"; };
+		A8DC1F2C26CFDFB800FA17C2 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
+		A8DC1F2E26D00DBD00FA17C2 /* PhotoWriting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoWriting.swift; sourceTree = "<group>"; };
 		C949668AC1794F566681B940 /* Pods-Writing.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Writing.release.xcconfig"; path = "Target Support Files/Pods-Writing/Pods-Writing.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,6 +142,7 @@
 			children = (
 				A85337A326BFBDF20030906E /* Main.storyboard */,
 				A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */,
+				A8DC1F2C26CFDFB800FA17C2 /* SearchCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				A86D0B0F26C10B98006EEC20 /* ErrorModel.swift */,
 				A88F1FB826C3AD9C00FE3223 /* Writing.swift */,
 				A815D1BA26C6A7A4000B397E /* TimeWriting.swift */,
+				A8DC1F2E26D00DBD00FA17C2 /* PhotoWriting.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -325,6 +331,7 @@
 				A86D0B2F26C190BC006EEC20 /* AlertViewController.swift in Sources */,
 				A86D0B2426C14825006EEC20 /* MoreViewController.swift in Sources */,
 				A86D0B1026C10B98006EEC20 /* ErrorModel.swift in Sources */,
+				A8DC1F2D26CFDFB800FA17C2 /* SearchCollectionViewCell.swift in Sources */,
 				A85337BF26C02C830030906E /* LoginViewController.swift in Sources */,
 				A88F1FBC26C4103900FE3223 /* HashTagTableViewCell.swift in Sources */,
 				A86D0B2026C147FF006EEC20 /* PlusViewController.swift in Sources */,
@@ -340,6 +347,7 @@
 				A815D1BB26C6A7A4000B397E /* TimeWriting.swift in Sources */,
 				A85337A026BFBDF20030906E /* SceneDelegate.swift in Sources */,
 				A86D0B1A26C14295006EEC20 /* MainViewController.swift in Sources */,
+				A8DC1F2F26D00DBD00FA17C2 /* PhotoWriting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

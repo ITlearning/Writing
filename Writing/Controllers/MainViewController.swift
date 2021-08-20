@@ -16,8 +16,8 @@ class MainViewController: TabmanViewController {
     
     
     @IBOutlet weak var barBackground: UIView!
-    let barIcon = [UIImage(systemName: "house.fill"), UIImage(systemName: "text.magnifyingglass"), UIImage(systemName: "plus.app.fill"), UIImage(systemName: "number"), UIImage(systemName: "ellipsis")]
-    let barText = ["홈", "검색", "글쓰기", "태그", "더 보기"]
+    let barIcon = [UIImage(systemName: "house.fill"), UIImage(systemName: "photo.fill.on.rectangle.fill"), UIImage(systemName: "plus.app.fill"), UIImage(systemName: "number"), UIImage(systemName: "ellipsis")]
+    let barText = ["홈", "사진", "글쓰기", "태그", "더 보기"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

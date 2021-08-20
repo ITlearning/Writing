@@ -15,7 +15,9 @@ target 'Writing' do
   pod 'LSHContributionView'
   pod 'YPImagePicker'
   pod 'Firebase/Storage'
-  pod 'SquareFlowLayout'
+  pod 'ImageViewer.swift', '~> 3.0'
+  pod 'ImageViewer.swift/Fetcher', '~> 3.0'
+  pod 'SKPhotoBrowser'
   # Pods for Writing
 
 end
