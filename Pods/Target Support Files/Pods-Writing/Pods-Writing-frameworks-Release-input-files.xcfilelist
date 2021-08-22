@@ -1,4 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-Writing/Pods-Writing-frameworks.sh
+${BUILT_PRODUCTS_DIR}/AlignedCollectionViewFlowLayout/AlignedCollectionViewFlowLayout.framework
 ${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework
 ${BUILT_PRODUCTS_DIR}/FirebaseAuth/FirebaseAuth.framework
 ${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework

@@ -27,7 +27,6 @@
 		A86D0B2026C147FF006EEC20 /* PlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86D0B1F26C147FF006EEC20 /* PlusViewController.swift */; };
 		A86D0B2226C1480F006EEC20 /* HashTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86D0B2126C1480F006EEC20 /* HashTagViewController.swift */; };
 		A86D0B2426C14825006EEC20 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86D0B2326C14825006EEC20 /* MoreViewController.swift */; };
-		A86D0B2F26C190BC006EEC20 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86D0B2E26C190BC006EEC20 /* AlertViewController.swift */; };
 		A88F1FB426C2DDC500FE3223 /* ChallengeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88F1FB326C2DDC500FE3223 /* ChallengeViewController.swift */; };
 		A88F1FB626C2E61C00FE3223 /* ChallengeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88F1FB526C2E61C00FE3223 /* ChallengeTableViewCell.swift */; };
 		A88F1FB926C3AD9C00FE3223 /* Writing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88F1FB826C3AD9C00FE3223 /* Writing.swift */; };
@@ -62,7 +61,6 @@
 		A86D0B1F26C147FF006EEC20 /* PlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusViewController.swift; sourceTree = "<group>"; };
 		A86D0B2126C1480F006EEC20 /* HashTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTagViewController.swift; sourceTree = "<group>"; };
 		A86D0B2326C14825006EEC20 /* MoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
-		A86D0B2E26C190BC006EEC20 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		A88F1FB326C2DDC500FE3223 /* ChallengeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeViewController.swift; sourceTree = "<group>"; };
 		A88F1FB526C2E61C00FE3223 /* ChallengeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeTableViewCell.swift; sourceTree = "<group>"; };
 		A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Oneprettynight.ttf; sourceTree = "<group>"; };
@@ -183,7 +181,6 @@
 				A86D0B1F26C147FF006EEC20 /* PlusViewController.swift */,
 				A86D0B2126C1480F006EEC20 /* HashTagViewController.swift */,
 				A86D0B2326C14825006EEC20 /* MoreViewController.swift */,
-				A86D0B2E26C190BC006EEC20 /* AlertViewController.swift */,
 			);
 			path = TabBarControllers;
 			sourceTree = "<group>";
@@ -328,7 +325,6 @@
 			files = (
 				A86D0B1E26C147F8006EEC20 /* SearchViewController.swift in Sources */,
 				A88F1FB426C2DDC500FE3223 /* ChallengeViewController.swift in Sources */,
-				A86D0B2F26C190BC006EEC20 /* AlertViewController.swift in Sources */,
 				A86D0B2426C14825006EEC20 /* MoreViewController.swift in Sources */,
 				A86D0B1026C10B98006EEC20 /* ErrorModel.swift in Sources */,
 				A8DC1F2D26CFDFB800FA17C2 /* SearchCollectionViewCell.swift in Sources */,

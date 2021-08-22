@@ -10,6 +10,8 @@ import FirebaseStorage
 import Firebase
 import ImageViewer_swift
 import Kingfisher
+import AlignedCollectionViewFlowLayout
+
 class SearchViewController: UIViewController{
     
     
@@ -17,6 +19,7 @@ class SearchViewController: UIViewController{
         callWriting()
     }
     
+    @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var photoText: UILabel!
     @IBOutlet weak var subText: UILabel!
     @IBOutlet weak var searchCollectionView: UICollectionView!
@@ -32,6 +35,10 @@ class SearchViewController: UIViewController{
         self.searchCollectionView.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         self.searchCollectionView.delegate = self
         self.searchCollectionView.dataSource = self
+        let alignedFlowLayout = searchCollectionView.collectionViewLayout as? AlignedCollectionViewFlowLayout
+        alignedFlowLayout?.horizontalAlignment = .left
+        //alignedFlowLayout?.minimumLineSpacing = 2
+        alignedFlowLayout?.verticalAlignment = .center
         callWriting()
         // Do any additional setup after loading the view.
     }
@@ -45,10 +52,13 @@ class SearchViewController: UIViewController{
                     print("문제가 발생했습니다. \(e)")
                 } else {
                     if let snapshotDocument = QuertSnapshot?.documents {
+                        var cnt = 0
                         for doc in snapshotDocument {
+                            
                             let data = doc.data()
                             
                             if let writingText = data["writing"] as? String, let timeSender = data["time"] as? Double {
+                                cnt += 1
                                 let pathRef = self.storage.reference(withPath: "\(writingSender)/\(timeSender)")
                                 let makeurl = "https://firebasestorage.googleapis.com/v0/b/\(pathRef.bucket)/o/\(writingSender)%2F\(pathRef.name)?alt=media"
                                 let newWriting = PhotoWriting(time: timeSender, writing: writingText, data: makeurl)
@@ -66,55 +76,46 @@ class SearchViewController: UIViewController{
                                 
                             }
                         }
+                        if cnt == 0 {
+                            print("응 여기로 들어왔어.")
+                            self.writing.removeAll()
+                            self.searchCollectionView.reloadData()
+                            self.emptyLabel.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
+                            self.emptyLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                            
+                        } else {
+                            self.emptyLabel.text = ""
+                        }
                     }
                 }
             }
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Writing Count: \(writing.count)")
         return writing.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/3-1
-//        if indexPath.row % 7 == 0 {
-//            let size = CGSize(width: width, height: width*2)
-//
-//            return size
-//        } else {
-//            let size = CGSize(width: width, height: width)
-//            return size
-//        }
-        let size = CGSize(width: width, height: width)
-        return size
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.sectionInset = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
+        layout.minimumLineSpacing = 1
+        layout.minimumInteritemSpacing = 1
+        layout.invalidateLayout()
+        
+        return CGSize(width: ((self.view.frame.width/3)-3), height: ((self.view.frame.width/3)-3))
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
         print("Writing Array:\(self.writing)")
         let writing = writing[indexPath.row]
-        
+        print("Writing Index: \(writing)")
         cell.backgroundColor = .lightGray
         cell.imageView.kf.indicatorType = .activity
         let cache = ImageCache.default
@@ -122,15 +123,11 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         cache.retrieveImage(forKey: writing.data, options: nil) { c in
             switch c {
             case .success(let value):
-                let width = collectionView.frame.width/3-1
                 if let image = value.image {
-                    //image.draw(in: CGRect(x: 0, y: 0, width: width, height: width*2))
-                    //cell.imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: width))
                     cell.imageView.image = image
                     cell.imageView.setupImageViewer()
                     
                 } else {
-                    let width = collectionView.frame.width/3-1
                     cell.imageView.kf.setImage(with: URL(string: writing.data), options: [.transition(.fade(0.2)), .forceTransition, .loadDiskFileSynchronously, .retryStrategy(retry)])
                     cell.imageView.setupImageViewer()
                 }
@@ -139,6 +136,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             }
             
         }
+        
         
         return cell
         

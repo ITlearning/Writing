@@ -41,6 +41,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     var num: Int = 0
     var dataSquare: [[Int]] = []
     var writing = [Int]()
+    var other: Int = UserDefaults.standard.integer(forKey: "count")
     var index: Int = UserDefaults.standard.integer(forKey: "index")
     
     
@@ -50,15 +51,24 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: - 뷰가 나왔을 때
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         contribute()
         greenLabelUpdate()
+        self.challengeUpdateText.text = "\(self.dayArray[self.index])일 중 \(other)일 달성!"
+        ringProgressView.startColor = #colorLiteral(red: 0.00112261367, green: 0.7317003608, blue: 0.8825521469, alpha: 1)
+        ringProgressView.endColor = #colorLiteral(red: 0.006783903111, green: 0.9808149934, blue: 0.8184377551, alpha: 1)
+        ringProgressView.ringWidth = 8
+        
+        ringProgressView.progress = Double(other)/Double(self.dayArray[self.index])
+        if other == 0 {
+            makeContribution()
+        }
+        
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print(month.setNumber())
         self.view.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         appNameLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -66,9 +76,16 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 
         scrollView.delegate = self
         
-
+        ringProgressView.startColor = #colorLiteral(red: 0.00112261367, green: 0.7317003608, blue: 0.8825521469, alpha: 1)
+        ringProgressView.endColor = #colorLiteral(red: 0.006783903111, green: 0.9808149934, blue: 0.8184377551, alpha: 1)
+        ringProgressView.ringWidth = 8
+        
+        ringProgressView.progress = 0
+        self.challengeUpdateText.text = "\(self.dayArray[self.index])일 중 \(other)일 달성!"
+        ringProgress.addSubview(ringProgressView)
         greenLabelUpdate()
         contribute()
+        makeContribution()
         print(dataSquare)
         activityGraph.layer.backgroundColor = #colorLiteral(red: 0.3912160629, green: 0.5305428862, blue: 0.676872947, alpha: 1)
         activityGraph.clipsToBounds = true
@@ -96,6 +113,41 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    func makeContribution() {
+        let contribution = LSHContributionView(frame: CGRect(x: 0, y: 0, width: 200, height: 130))
+        contribution.translatesAutoresizingMaskIntoConstraints = false
+        
+        contribution.data = self.dataSquare
+        contribution.colorScheme = "Default"
+        let m
+            = self.month.setNumber()
+        self.contributionView.addSubview(contribution)
+        contribution.centerXAnchor.constraint(equalTo: self.contributionView.centerXAnchor).isActive = true
+        contribution.centerYAnchor.constraint(equalTo: self.contributionView.centerYAnchor).isActive = true
+        // 코드를 통한 오토레이아웃 설정
+        if m <= 30 {
+            contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 10).isActive = true
+            contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -10).isActive = true
+            contribution.topAnchor.constraint(equalTo: self.contributionView.topAnchor, constant: 10).isActive = true
+            contribution.bottomAnchor.constraint(equalTo: self.contributionView.bottomAnchor, constant: 0).isActive = true
+            contribution.heightAnchor.constraint(equalTo: self.contributionView.heightAnchor, constant: 20).isActive = true
+        } else {
+            contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 20).isActive = true
+            contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -20).isActive = true
+            contribution.topAnchor.constraint(equalTo: self.contributionView.topAnchor, constant: 5).isActive = true
+            contribution.bottomAnchor.constraint(equalTo: self.contributionView.bottomAnchor, constant: -20).isActive = true
+            contribution.heightAnchor.constraint(equalTo: self.contributionView.heightAnchor, constant: 0).isActive = true
+            //contribution.widthAnchor.constraint(equalTo: self.contributionView.widthAnchor, constant: 50).isActive = true
+        }
+        
+        contribution.backgroundColor = .clear
+        self.contributionView.layer.cornerRadius = 10
+        
+        // 원하는 위치 Radius 설정
+        self.contributionView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMaxXMaxYCorner)
+    }
+    
+    
     //MARK: - 파이어베이스 서버 땡겨오기
     func contribute() {
         self.index = UserDefaults.standard.integer(forKey: "index")
@@ -107,10 +159,12 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                 if let e = error {
                     print("문제가 발생 했읍니다.\(e)")
                 } else {
+                    var cnt = 0
                     if let snapshotDocuments = QuertSnapshot?.documents {
                         for doc in snapshotDocuments {
                             let data = doc.data()
                             if let serverDay = data["time"] as? Double {
+                                cnt += 1
                                 let date: DateFormatter = {
                                     let df = DateFormatter()
                                     df.locale = Locale(identifier: "ko_KR")
@@ -134,22 +188,15 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                                 } else if num <= 30 {
                                     self.dataSquare[2][num-21] += 1
                                 }
-                                let contribution = LSHContributionView(frame: CGRect(x: 0, y: 0, width: 200, height: 130))
-                                contribution.translatesAutoresizingMaskIntoConstraints = false
-                                
-                                contribution.data = self.dataSquare
-                                contribution.colorScheme = "Default"
-                                let m
-                                    = self.month.setNumber()
-                                self.contributionView.addSubview(contribution)
                                 self.challengeUpdateText.text = "\(self.dayArray[self.index])일 중 \(dayCount.count)일 달성!"
-                                contribution.centerXAnchor.constraint(equalTo: self.contributionView.centerXAnchor).isActive = true
-                                contribution.centerYAnchor.constraint(equalTo: self.contributionView.centerYAnchor).isActive = true
+                                makeContribution()
                                 
                                 // 챌린지 뷰 컨트롤러로 실시간 작성개수 넘기기
                                 guard let vc = self.storyboard?.instantiateViewController(identifier: "ChallengeViewController") as? ChallengeViewController else { return }
+                                let UserDefaults = UserDefaults.standard
+                                UserDefaults.set(dayCount.count ,forKey: "count")
                                 vc.nowWriting = Double(dayCount.count)
-                                
+                                print("지금까지 작성한 날짜 \(vc.nowWriting)")
                                 ringProgressView.startColor = #colorLiteral(red: 0.00112261367, green: 0.7317003608, blue: 0.8825521469, alpha: 1)
                                 ringProgressView.endColor = #colorLiteral(red: 0.006783903111, green: 0.9808149934, blue: 0.8184377551, alpha: 1)
                                 ringProgressView.ringWidth = 8
@@ -158,29 +205,12 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
                                 
                                 ringProgress.addSubview(ringProgressView)
                                 
-                                // 코드를 통한 오토레이아웃 설정
-                                if m <= 30 {
-                                    contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 10).isActive = true
-                                    contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -10).isActive = true
-                                    contribution.topAnchor.constraint(equalTo: self.contributionView.topAnchor, constant: 10).isActive = true
-                                    contribution.bottomAnchor.constraint(equalTo: self.contributionView.bottomAnchor, constant: 0).isActive = true
-                                    contribution.heightAnchor.constraint(equalTo: self.contributionView.heightAnchor, constant: 20).isActive = true
-                                } else {
-                                    contribution.leadingAnchor.constraint(equalTo: self.contributionView.leadingAnchor, constant: 20).isActive = true
-                                    contribution.trailingAnchor.constraint(equalTo: self.contributionView.trailingAnchor, constant: -20).isActive = true
-                                    contribution.topAnchor.constraint(equalTo: self.contributionView.topAnchor, constant: 5).isActive = true
-                                    contribution.bottomAnchor.constraint(equalTo: self.contributionView.bottomAnchor, constant: -20).isActive = true
-                                    contribution.heightAnchor.constraint(equalTo: self.contributionView.heightAnchor, constant: 0).isActive = true
-                                    //contribution.widthAnchor.constraint(equalTo: self.contributionView.widthAnchor, constant: 50).isActive = true
-                                }
                                 
-                                contribution.backgroundColor = .clear
-                                self.contributionView.layer.cornerRadius = 10
-                                
-                                // 원하는 위치 Radius 설정
-                                self.contributionView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMaxXMaxYCorner)
                                 
                             }
+                        }
+                        if cnt == 0 {
+                            //self.challengeUpdateText.text = "\(self.dayArray[self.index])일 중 \(dayCount.count)일 달성!"
                         }
                     }
                 }
@@ -193,13 +223,6 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     // status Bar 터치시 위로 올라가게 설정
     func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         return true
-    }
-    
-    
-    // 벨 버튼
-    @IBAction func bellButton(_ sender: UIButton) {
-        print("Good")
-        
     }
     
 }

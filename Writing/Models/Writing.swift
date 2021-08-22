@@ -14,4 +14,5 @@ struct Writing {
     let documentID: String
     let data: String
     let deleteID: StorageReference
+    let switchID: String
 }

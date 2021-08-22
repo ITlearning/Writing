@@ -142,12 +142,12 @@ class PlusViewController: UIViewController, UITextViewDelegate {
                     "sender": writingSender,
                     "writing": writing,
                     "emotion": selectEmotion,
-                    "time": time
+                    "time": time,
+                    "switch": String(describing: self.selectImage)
                 ]) { error in
                     if let e = error {
                         print("업로드 중 에러 발생\(e)")
                     } else {
-                        
                         let image = self.selectImage
                         if image != nil {
                             self.uploadImage(img: image!, time: time)

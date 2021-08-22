@@ -18,6 +18,7 @@ target 'Writing' do
   pod 'ImageViewer.swift', '~> 3.0'
   pod 'ImageViewer.swift/Fetcher', '~> 3.0'
   pod 'SKPhotoBrowser'
+  pod "AlignedCollectionViewFlowLayout"
   # Pods for Writing
 
 end

@@ -48,7 +48,6 @@ class HashTagViewController: UIViewController {
         
         viewMainName.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         viewSubName.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        
         // 버튼 배열에 버튼들 추가
         btnArray.append(happyButton)
         btnArray.append(sadButton)
@@ -89,16 +88,13 @@ class HashTagViewController: UIViewController {
                         banner.show()
                     }
                 }
+                
                 let point = sender.convert(CGPoint.zero, to: self.hashTagTableView)
-                guard let indexPath = self.hashTagTableView.indexPathForRow(at: point) else {return}
                 self.writing.remove(at: sender.tag)
                 print(self.writing)
-                //self.hashTagTableView.beginUpdates()
-                //self.hashTagTableView.deleteRows(at: [IndexPath(row: indexPath.row, section: 0)], with: .left)
-                //self.hashTagTableView.endUpdates()
                 if self.emotionStatus == "선택안됨" {
-                    
-                    self.hashTagTableView.reloadData()
+                    self.originalUpdate()
+                    //self.hashTagTableView.reloadData()
                 } else {
                     self.update("emotion", emotionType: self.emotionStatus)
                     
@@ -167,47 +163,55 @@ class HashTagViewController: UIViewController {
         noneButton.tintColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
         noneButton.layer.cornerRadius = 3
     }
-    
-    func downLoad(_ pathRef: StorageReference, completion: @escaping((String)-> Void)) {
-        var strURL = ""
-        pathRef.downloadURL(completion: { url, error in
-            if let urlText = url?.absoluteString {
-                strURL = urlText
-                completion(strURL)
-            } else {
-                completion(strURL)
-            }
-        })
-    }
+
     
     //MARK: - 테이블 뷰 업데이트 목록들
     func originalUpdate() {
         if let writingSender = Auth.auth().currentUser?.email {
+            
             dataBase.collection(writingSender)
                 .order(by: "time")
                 .addSnapshotListener { QuertSnapshot, error in
                     self.writing = []
-                    
+                    var dayCount: [Int] = []
                     if let e = error {
                         print("문제가 발생했습니다. \(e)")
                     } else {
                         if let snapshotDocuments = QuertSnapshot?.documents {
                             var cnt = 0
                             for doc in snapshotDocuments {
+                                
                                 let id = doc.documentID.description
                                 let data = doc.data()
                                 
-                                if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
+                                
+                                if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double, let switchSender = data["switch"] as? String {
                                     cnt += 1
+                                    let date: DateFormatter = {
+                                        let df = DateFormatter()
+                                        df.locale = Locale(identifier: "ko_KR")
+                                        df.timeZone = TimeZone(abbreviation: "KST")
+                                        df.dateFormat = "dd"
+                                        return df
+                                    }()
+                                    
+                                    let today = Int(timeSender)
+                                    let timeInterval = TimeInterval(today)
+                                    let day = Date(timeIntervalSince1970: timeInterval)
+                                    let num = Int(date.string(from: day))!
+                                    //self.CircleStatus()
+                                    if dayCount.contains(num) == false{
+                                        dayCount.append(num)
+                                    }
+                                    let UserDefaults = UserDefaults.standard
+                                    print("데이 카운트 : \(dayCount.count)")
+                                    UserDefaults.set(dayCount.count ,forKey: "count")
+                                    
+                                    
                                     let pathRef = self.storage.reference(withPath: "\(writingSender)/\(timeSender)")
                                     let makeurl = "https://firebasestorage.googleapis.com/v0/b/\(pathRef.bucket)/o/\(writingSender)%2F\(pathRef.name)?alt=media"
                                     
-                                    // 지금 클로저 안에서만 url이 보여지므로 이걸 어떻게 밖으로 꺼낼것인지, 아니면 다른 방법으로 url을 생성하든지 해야한다.
-                                    self.downLoad(pathRef) { url in
-                                        print("Original URL : \(url)")
-                                    }
-                                    print("makeURL: \(makeurl)")
-                                    self.writing.append(Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: makeurl, deleteID: pathRef))
+                                    self.writing.append(Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: makeurl, deleteID: pathRef, switchID: switchSender))
                                     self.writing.sort(by: {$0.time < $1.time})
                                     self.hashTagTableView.reloadData()
                                     let indexPath = IndexPath(row: self.writing.count-1, section: 0)
@@ -216,12 +220,14 @@ class HashTagViewController: UIViewController {
                                 }
                             }
                             if cnt == 0 {
-                                print("여길로 들어왔찡")
                                 self.writing.removeAll()
                                 self.hashTagTableView.reloadData()
                                 self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
                                 self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
                                 self.nothingText.numberOfLines = 0
+                                let UserDefaults = UserDefaults.standard
+                                UserDefaults.set(0 ,forKey: "count")
+                                print("데이카운트 0")
                             } else {
                                 self.nothingText.text = ""
                             }
@@ -241,7 +247,7 @@ class HashTagViewController: UIViewController {
                 .order(by: sort)
                 .addSnapshotListener { QuertSnapshot, error in
                     self.writing = []
-                    
+                    var dayCount: [Int] = []
                     if let e = error {
                         print("문제가 발생했습니다. \(e)")
                     } else {
@@ -252,13 +258,34 @@ class HashTagViewController: UIViewController {
                                 let id = doc.documentID.description
                                 let data = doc.data()
                                 
-                                if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double {
+                                if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double, let switchSender = data["switch"] as? String {
                                     if emotionSender == emotionType {
+                                        
                                         cnt += 1
+                                        
+                                        let date: DateFormatter = {
+                                            let df = DateFormatter()
+                                            df.locale = Locale(identifier: "ko_KR")
+                                            df.timeZone = TimeZone(abbreviation: "KST")
+                                            df.dateFormat = "dd"
+                                            return df
+                                        }()
+                                        
+                                        let today = Int(timeSender)
+                                        let timeInterval = TimeInterval(today)
+                                        let day = Date(timeIntervalSince1970: timeInterval)
+                                        let num = Int(date.string(from: day))!
+                                        //self.CircleStatus()
+                                        if dayCount.contains(num) == false{
+                                            dayCount.append(num)
+                                        }
+                                        let UserDefaults = UserDefaults.standard
+                                        UserDefaults.set(dayCount.count ,forKey: "count")
+                                        
                                         let pathRef = self.storage.reference(withPath: "\(writingSender)/\(timeSender)")
                                         let makeurl = "https://firebasestorage.googleapis.com/v0/b/\(pathRef.bucket)/o/\(writingSender)%2F\(pathRef.name)?alt=media"
                                         
-                                        let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: makeurl, deleteID: pathRef)
+                                        let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: makeurl, deleteID: pathRef, switchID: switchSender)
                                         
                                         self.writing.append(newWriting)
                                         self.writing.sort(by: {$0.time < $1.time})
@@ -307,27 +334,39 @@ extension HashTagViewController: UITableViewDelegate, UITableViewDataSource {
         let writing = writing[indexPath.row]
         print()
         
+        
+        
         cell.writingText.text = writing.writing
         cell.writingText.textColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         cell.hashTagLabel.text = writing.emtion
         cell.hashTagLabel.textColor = #colorLiteral(red: 0.1834903555, green: 0.1986690177, blue: 0.2207198435, alpha: 1)
+        print("Writing ID: \(writing.switchID)")
         
         cell.textImageView.kf.indicatorType = .activity
         let cache = ImageCache.default
         let retry = DelayRetryStrategy(maxRetryCount: 5, retryInterval: .seconds(2))
-        cache.retrieveImage(forKey: writing.data, options: nil) { c in
-            switch c {
-            case .success(let value):
-                if let image = value.image {
-                    cell.textImageView.image = image
-                } else {
-                    cell.textImageView.kf.setImage(with: URL(string: writing.data), options: [.transition(.fade(0.2)), .forceTransition, .keepCurrentImageWhileLoading, .retryStrategy(retry)])
+        if writing.switchID != "nil" {
+            cache.retrieveImage(forKey: writing.data, options: nil) { c in
+                cell.ImageViewHeight.constant = CGFloat(360)
+                switch c {
+                case .success(let value):
+                    
+                    if let image = value.image {
+                        cell.textImageView.image = image
+                    } else {
+                        cell.textImageView.kf.setImage(with: URL(string: writing.data), options: [.transition(.fade(0.2)), .forceTransition, .keepCurrentImageWhileLoading, .retryStrategy(retry)])
+                    }
+                case .failure(let error):
+                    print("예아 제가 실패입니다")
+                    
                 }
-            case .failure(let error):
-                print("이미지 에러: \(error)")
-                cell.ImageViewHeight.constant = cell.textImageView.frame.height - CGFloat(360)
             }
+        } else {
+            cell.ImageViewHeight.constant = CGFloat(0)
         }
+        
+
+        
         
             
         let date: DateFormatter = {

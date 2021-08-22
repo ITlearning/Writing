@@ -19,9 +19,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
+        
+        // 로그인을 유무에 따라 rootController를 설정해주는 코드.
         if Auth.auth().currentUser != nil {
+            // 뷰 컨트롤러 선택
             let mainTBC = storyboard.instantiateViewController(identifier: "MainViewController")
+            // rootViewController 설정
             window?.rootViewController = mainTBC
         } else {
             let startNVC = storyboard.instantiateViewController(identifier: "StartNavigationController")
@@ -66,10 +69,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     
+    // 루트 뷰 컨트롤러를 변경할 때 사용하는 메서드
     func changeRootViewController (_ vc: UIViewController, animated: Bool) {
+        // guard let으로 윈도우를 옵셔널 바인딩한 상황
         guard let window = self.window else { return }
+        
+        // 아까 위에서 설정한 window를 기준으로 RootViewController를 재설정하는 코드
         window.rootViewController = vc
         
+        // 뷰가 변경될 때 이동하는 애니메이션과 시간등을 정의
         UIView.transition(with: window, duration: 0.4, options: [.transitionCrossDissolve], animations: nil, completion: nil)
     }
 

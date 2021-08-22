@@ -23,7 +23,7 @@ class ChallengeViewController: UIViewController {
     
     // 현재 게시글 수 - 지속적인 업데이트가 필요한 숫자
     // 나중에 파베서버에서 개수 땡겨와서 업데이트
-    var nowWriting: Double = 3
+    var nowWriting: Double = UserDefaults.standard.double(forKey: "count")
     @IBOutlet weak var challengeTableView: UITableView!
     
     //MARK: - 뷰가 보여지기 전
@@ -36,12 +36,12 @@ class ChallengeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        print("챌뷰컨 지금까지 작성한 것 \(nowWriting)")
         // Do any additional setup after loading the view.
         challengeTableView.rowHeight = UITableView.automaticDimension
         challengeTableView.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
         //challengeTableView.estimatedRowHeight = 600
-        select = UserDefaults.standard.integer(forKey: "index")
+        
     }
 
     //MARK: - 취소버튼
@@ -52,7 +52,10 @@ class ChallengeViewController: UIViewController {
     //MARK: - 작성완료 업데이트
     func update() {
         for i in 0..<5 {
+            
             if nowWriting / Double(intro[i]) >= 1 {
+                print("지금 작성된 거 : \(nowWriting), 개수 \(intro[i])")
+                print("응 여기로 들어왔어, 이건 챌린지꺼야")
                 text[i] = "작성 완료!"
             }else {
                 text[i] = "\(intro[i])일 작성하기"

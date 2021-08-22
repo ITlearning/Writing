@@ -212,6 +212,7 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - AlignedCollectionViewFlowLayout (1.1.2)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -336,6 +337,7 @@ PODS:
     - SteviaLayout (~> 4.7.3)
 
 DEPENDENCIES:
+  - AlignedCollectionViewFlowLayout
   - Firebase/Auth
   - Firebase/Firestore
   - Firebase/Storage
@@ -354,6 +356,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
+    - AlignedCollectionViewFlowLayout
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAuth
@@ -388,6 +391,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
+  AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
   FirebaseAuth: fd12c82de44e7ad3b821610c387b8251f03aa0f9
@@ -420,6 +424,6 @@ SPEC CHECKSUMS:
   TextFieldEffects: 529b8aff706fb40f82c41c780c0777941a893796
   YPImagePicker: 6f410f475bd22fa8cd430495b54d4b2f15865c2d
 
-PODFILE CHECKSUM: 735c8ec731fec4a9d31d91e5e2a8386046765bc8
+PODFILE CHECKSUM: 8e43083f3947743a8f25d6a975761abfefcfe077
 
 COCOAPODS: 1.10.1

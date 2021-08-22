@@ -16,20 +16,6 @@ class StartViewController: UIViewController {
     @IBOutlet weak var subText: UILabel!
     @IBOutlet weak var loginText: UILabel!
     
-    /*
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if Auth.auth().currentUser != nil {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let mainTabBarController = storyboard.instantiateViewController(identifier: "MainView")
-            mainTabBarController.modalPresentationStyle = .fullScreen
-            
-            self.present(mainTabBarController, animated: true, completion: nil)
-        }
-    }
-   */
-    
     override func viewWillAppear(_ animated: Bool) {
         // 사실 슈퍼를 단 코드는 별다른 기능이 없다.
         // 하지만 오버라이드를 한 코드에 super를 호출하는 습관을 들이는게 좋다고 한다.
