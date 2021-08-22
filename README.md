@@ -18,10 +18,12 @@
 
 ## 구현 모습
 
-
-
 <img src="https://user-images.githubusercontent.com/11778058/130349283-4947b07b-0a9d-43fa-9cc3-47248d81c7e8.gif"  width="256" height="455"/> <img src="https://user-images.githubusercontent.com/11778058/130349329-6eeed2e6-ff33-4203-a37a-47ba791ba49f.gif"  width="256" height="455"/> <img src="https://user-images.githubusercontent.com/11778058/130349631-3386359b-050c-4383-8f78-29ac37575674.gif"  width="256" height="455"/> <img src="https://user-images.githubusercontent.com/11778058/130349739-2abcf14e-4633-4f80-9ec3-a1540fa3edcd.gif"  width="256" height="455"/> <img src="https://user-images.githubusercontent.com/11778058/130349978-b7fc43a3-da47-447f-ad0a-d205e1e289ea.gif"  width="256" height="455"/> <img src="https://user-images.githubusercontent.com/11778058/130350119-1552c530-3101-4861-a0be-1502dce3be3d.gif"  width="256" height="455"/> 
 
+## 제작 기간
+**2021년 8월 12일 ~ 8월 22일**
+
+**총 10일 소요**
 
 ## 사용언어
 `Swift`
