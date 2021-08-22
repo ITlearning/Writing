@@ -28,7 +28,7 @@
 ## 서버
 ![image](https://user-images.githubusercontent.com/11778058/130351340-3cac484c-f7f1-4491-bf3a-1608c14fe160.png)
 
-## 엡 설명
+## 앱 설명
 ![image](https://user-images.githubusercontent.com/11778058/130352195-97d7055f-e23d-4ba8-bf17-6e6dc144c91a.png)![image](https://user-images.githubusercontent.com/11778058/130352387-7aaeda37-5624-4bfd-adb8-ee35e6942e05.png)![image](https://user-images.githubusercontent.com/11778058/130352587-552802d6-23de-4c5b-aa63-1c888e2ea157.png)![image](https://user-images.githubusercontent.com/11778058/130352785-43e62197-df10-4dd7-8a7a-b44338aa140b.png)![image](https://user-images.githubusercontent.com/11778058/130352977-fb90c205-b5b6-40fb-85cb-0f9377cb7988.png)![image](https://user-images.githubusercontent.com/11778058/130353090-05a8a63a-973d-4150-a574-316f0bbbda09.png)
 
 
