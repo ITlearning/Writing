@@ -1,14 +1,16 @@
 //
 //  StartViewController.swift
 //  Writing
-//
+//  시작 뷰 컨트롤러
 //  Created by IT learning on 2021/08/08.
 //
 
 import UIKit
 import Firebase
-class StartViewController: UIViewController {
 
+class StartViewController: UIViewController {
+    
+    // View와 Button, Label들
     @IBOutlet weak var background: UIView!
     @IBOutlet weak var signUp: UIButton!
     @IBOutlet weak var signIn: UIButton!
@@ -16,6 +18,8 @@ class StartViewController: UIViewController {
     @IBOutlet weak var subText: UILabel!
     @IBOutlet weak var loginText: UILabel!
     
+    
+    //MARK: - 화면이 나타날 시 네비게이션 바 감추기
     override func viewWillAppear(_ animated: Bool) {
         // 사실 슈퍼를 단 코드는 별다른 기능이 없다.
         // 하지만 오버라이드를 한 코드에 super를 호출하는 습관을 들이는게 좋다고 한다.
@@ -24,6 +28,8 @@ class StartViewController: UIViewController {
         navigationController?.isNavigationBarHidden = true
     }
     
+    
+    //MARK: - 화면이 사라질 시 네비게이션 바 만들기
     // 해당 화면을 벗어날 때에는 Navigation Bar가 보이게 설정한다.
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -43,31 +49,12 @@ class StartViewController: UIViewController {
         
         
     }
-    //MARK: - 그라데이션 배경화면 설정
-
+    //MARK: - 배경화면 설정
     func back() {
         background.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
-        /*
-        let pastelView = PastelView(frame: background.bounds)
-        
-        pastelView.startPastelPoint = .bottomLeft
-        pastelView.endPastelPoint = .topRight
-        
-        pastelView.animationDuration = 3.5
-        
-        pastelView.setColors([UIColor(red: 156/255, green: 39/255, blue: 176/255, alpha: 1.0),
-                              UIColor(red: 255/255, green: 64/255, blue: 129/255, alpha: 1.0),
-                              UIColor(red: 123/255, green: 31/255, blue: 162/255, alpha: 1.0),
-                              UIColor(red: 32/255, green: 76/255, blue: 255/255, alpha: 1.0),
-                              UIColor(red: 32/255, green: 158/255, blue: 255/255, alpha: 1.0),
-                              UIColor(red: 90/255, green: 120/255, blue: 127/255, alpha: 1.0),
-                              UIColor(red: 58/255, green: 255/255, blue: 217/255, alpha: 1.0)])
-        pastelView.startAnimation()
-        background.insertSubview(pastelView, at: 0)
-        //self.view.insertSubview(pastelView, at: 0)
-         */
     }
     
+    //MARK: - 버튼 설정
     func settingButton() {
         // 회원가입 버튼
         signUp.layer.cornerRadius = 10
@@ -87,15 +74,7 @@ class StartViewController: UIViewController {
         
     }
 
-    @IBAction func signUpButton(_ sender: Any) {
-        print("Hello")
-    }
-    
-    @IBAction func signInButton(_ sender: Any) {
-        
-    }
-    
-    // 상태바 설정
+    //MARK: - 상태바 색 설정
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }

@@ -1,7 +1,7 @@
 //
 //  SearchViewController.swift
 //  Writing
-//
+//  사진 뷰 컨트롤러
 //  Created by IT learning on 2021/08/09.
 //
 
@@ -14,19 +14,28 @@ import AlignedCollectionViewFlowLayout
 
 class SearchViewController: UIViewController{
     
-    
+    //MARK: - Status Bar 색 설정
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    //MARK: - 화면이 나타났을 때
     override func viewDidAppear(_ animated: Bool) {
         callWriting()
     }
     
+    //MARK: - Label과 Collection View
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var photoText: UILabel!
     @IBOutlet weak var subText: UILabel!
     @IBOutlet weak var searchCollectionView: UICollectionView!
+    
+    // 기본 변수들
     let dataBase = Firestore.firestore()
     var writing: [PhotoWriting] = []
     let image = [UIImage(named: "1")!, UIImage(named: "2")!, UIImage(named: "3")!]
     let storage = Storage.storage()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.2261704771, green: 0.3057078214, blue: 0.3860993048, alpha: 1)
@@ -43,6 +52,7 @@ class SearchViewController: UIViewController{
         // Do any additional setup after loading the view.
     }
     
+    //MARK: - 사진 불러오기
     func callWriting() {
         if let writingSender = Auth.auth().currentUser?.email {
             dataBase.collection(writingSender).order(by: "time").addSnapshotListener { QuertSnapshot, error in
@@ -77,7 +87,6 @@ class SearchViewController: UIViewController{
                             }
                         }
                         if cnt == 0 {
-                            print("응 여기로 들어왔어.")
                             self.writing.removeAll()
                             self.searchCollectionView.reloadData()
                             self.emptyLabel.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
@@ -94,6 +103,8 @@ class SearchViewController: UIViewController{
 
 }
 
+
+//MARK: - 컬렉션 뷰 정의 익스텐션
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("Writing Count: \(writing.count)")
@@ -114,12 +125,16 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
         print("Writing Array:\(self.writing)")
+        
         let writing = writing[indexPath.row]
+        
         print("Writing Index: \(writing)")
         cell.backgroundColor = .lightGray
         cell.imageView.kf.indicatorType = .activity
         let cache = ImageCache.default
         let retry = DelayRetryStrategy(maxRetryCount: 3, retryInterval: .seconds(1))
+        
+        // 캐시가 있는 상황 구별
         cache.retrieveImage(forKey: writing.data, options: nil) { c in
             switch c {
             case .success(let value):

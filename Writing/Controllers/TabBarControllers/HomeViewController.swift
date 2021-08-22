@@ -1,7 +1,7 @@
 //
 //  HomeViewController.swift
 //  Writing
-//
+//  메인 뷰 컨트롤러
 //  Created by IT learning on 2021/08/09.
 //
 

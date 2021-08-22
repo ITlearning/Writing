@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		A815D1BB26C6A7A4000B397E /* TimeWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A815D1BA26C6A7A4000B397E /* TimeWriting.swift */; };
 		A815D1C226C91728000B397E /* Month.swift in Sources */ = {isa = PBXBuildFile; fileRef = A815D1C126C91728000B397E /* Month.swift */; };
-		A846801C26C568740064827E /* Cafe24Oneprettynight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */; };
+		A82FFF1C26D21D48008A946C /* Cafe24Oneprettynight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A82FFF1B26D21D40008A946C /* Cafe24Oneprettynight.ttf */; };
 		A853379E26BFBDF20030906E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853379D26BFBDF20030906E /* AppDelegate.swift */; };
 		A85337A026BFBDF20030906E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853379F26BFBDF20030906E /* SceneDelegate.swift */; };
 		A85337A226BFBDF20030906E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85337A126BFBDF20030906E /* ViewController.swift */; };
@@ -42,6 +42,7 @@
 		708E6CAE1B3E286AD7127BBE /* Pods_Writing.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Writing.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A815D1BA26C6A7A4000B397E /* TimeWriting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWriting.swift; sourceTree = "<group>"; };
 		A815D1C126C91728000B397E /* Month.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Month.swift; sourceTree = "<group>"; };
+		A82FFF1B26D21D40008A946C /* Cafe24Oneprettynight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Oneprettynight.ttf; sourceTree = "<group>"; };
 		A853379A26BFBDF20030906E /* Writing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Writing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A853379D26BFBDF20030906E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A853379F26BFBDF20030906E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +64,6 @@
 		A86D0B2326C14825006EEC20 /* MoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		A88F1FB326C2DDC500FE3223 /* ChallengeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeViewController.swift; sourceTree = "<group>"; };
 		A88F1FB526C2E61C00FE3223 /* ChallengeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeTableViewCell.swift; sourceTree = "<group>"; };
-		A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cafe24Oneprettynight.ttf; sourceTree = "<group>"; };
 		A88F1FB826C3AD9C00FE3223 /* Writing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Writing.swift; sourceTree = "<group>"; };
 		A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTagTableViewCell.swift; sourceTree = "<group>"; };
 		A8DC1F2C26CFDFB800FA17C2 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -127,6 +127,7 @@
 				A85337B926BFDD8F0030906E /* View */,
 				A853379D26BFBDF20030906E /* AppDelegate.swift */,
 				A853379F26BFBDF20030906E /* SceneDelegate.swift */,
+				A82FFF1B26D21D40008A946C /* Cafe24Oneprettynight.ttf */,
 				A85337A626BFBDF40030906E /* Assets.xcassets */,
 				A85337A826BFBDF40030906E /* LaunchScreen.storyboard */,
 				A85337AB26BFBDF40030906E /* Info.plist */,
@@ -139,8 +140,6 @@
 			isa = PBXGroup;
 			children = (
 				A85337A326BFBDF20030906E /* Main.storyboard */,
-				A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */,
-				A8DC1F2C26CFDFB800FA17C2 /* SearchCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -148,7 +147,6 @@
 		A85337BA26BFDDA10030906E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A88F1FB726C3A83300FE3223 /* Cafe24Oneprettynight.ttf */,
 				A88F1FB226C2DD8A00FE3223 /* EtcControllers */,
 				A86D0B2726C170F5006EEC20 /* CustomTableViewCells */,
 				A85337C426C054750030906E /* TabBarControllers */,
@@ -168,6 +166,7 @@
 				A88F1FB826C3AD9C00FE3223 /* Writing.swift */,
 				A815D1BA26C6A7A4000B397E /* TimeWriting.swift */,
 				A8DC1F2E26D00DBD00FA17C2 /* PhotoWriting.swift */,
+				A815D1C126C91728000B397E /* Month.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -175,7 +174,6 @@
 		A85337C426C054750030906E /* TabBarControllers */ = {
 			isa = PBXGroup;
 			children = (
-				A815D1C126C91728000B397E /* Month.swift */,
 				A86D0B1B26C147F1006EEC20 /* HomeViewController.swift */,
 				A86D0B1D26C147F8006EEC20 /* SearchViewController.swift */,
 				A86D0B1F26C147FF006EEC20 /* PlusViewController.swift */,
@@ -188,6 +186,8 @@
 		A86D0B2726C170F5006EEC20 /* CustomTableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				A88F1FBA26C4103900FE3223 /* HashTagTableViewCell.swift */,
+				A8DC1F2C26CFDFB800FA17C2 /* SearchCollectionViewCell.swift */,
 				A88F1FB526C2E61C00FE3223 /* ChallengeTableViewCell.swift */,
 			);
 			path = CustomTableViewCells;
@@ -268,7 +268,7 @@
 			files = (
 				A85337AA26BFBDF40030906E /* LaunchScreen.storyboard in Resources */,
 				A85337B426BFCD5C0030906E /* GoogleService-Info.plist in Resources */,
-				A846801C26C568740064827E /* Cafe24Oneprettynight.ttf in Resources */,
+				A82FFF1C26D21D48008A946C /* Cafe24Oneprettynight.ttf in Resources */,
 				A85337A726BFBDF40030906E /* Assets.xcassets in Resources */,
 				A85337A526BFBDF20030906E /* Main.storyboard in Resources */,
 			);

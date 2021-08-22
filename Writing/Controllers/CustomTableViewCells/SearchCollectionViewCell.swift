@@ -1,7 +1,7 @@
 //
 //  SearchCollectionViewCell.swift
 //  Writing
-//
+//  사진 뷰 커스텀 셀
 //  Created by IT learning on 2021/08/20.
 //
 

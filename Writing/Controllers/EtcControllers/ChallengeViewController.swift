@@ -1,7 +1,7 @@
 //
 //  ChallengeViewController.swift
 //  Writing
-//
+//  챌린지 일수 선택하는 뷰
 //  Created by IT learning on 2021/08/11.
 //
 

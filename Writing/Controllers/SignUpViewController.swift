@@ -1,7 +1,7 @@
 //
 //  SignUpViewController.swift
 //  Writing
-//
+//  회원가입 뷰 컨트롤러
 //  Created by IT learning on 2021/08/08.
 //
 
@@ -10,11 +10,14 @@ import TextFieldEffects
 import Firebase
 import NotificationBannerSwift
 import SwiftOverlays
-class SignUpViewController: UIViewController {
 
+class SignUpViewController: UIViewController {
+    // Label
     @IBOutlet weak var signUpText: UILabel!
     @IBOutlet weak var subText: UILabel!
     
+    
+    // TextField
     @IBOutlet weak var emailTextField: HoshiTextField!
     @IBOutlet weak var passwordTextField: HoshiTextField!
 
@@ -31,7 +34,7 @@ class SignUpViewController: UIViewController {
         
     }
     
-    
+    //MARK: - 회원가입 버튼 클릭 시
     @IBAction func signUpButton(_ sender: Any) {
         let text = "회원가입 중..."
         self.showWaitOverlayWithText(text)
@@ -46,6 +49,8 @@ class SignUpViewController: UIViewController {
                 } else {
                     self.removeAllOverlays()
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    
+                    // 회원가입을 마쳤을 경우, 루트 뷰 컨트롤러를 홈 뷰 컨트롤러로 이동
                     let mainTabBarController = storyboard.instantiateViewController(identifier: "MainViewController")
                     let back = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
                         

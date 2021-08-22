@@ -1,12 +1,13 @@
 //
 //  Month.swift
 //  Writing
-//
+//  한 달 변환 모델
 //  Created by IT learning on 2021/08/15.
 //
 
 import Foundation
 
+//MARK: - 각 달의 한달 수 정의
 struct Month {
     let january = 31
     var febuary: Int {

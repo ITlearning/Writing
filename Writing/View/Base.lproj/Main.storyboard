@@ -60,7 +60,6 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="signUpButton:" destination="9HC-4z-wF7" eventType="touchUpInside" id="6Ak-fq-Y6D"/>
                                             <segue destination="IsK-dM-lAQ" kind="show" id="RQW-VG-YBG"/>
                                         </connections>
                                     </button>
@@ -75,7 +74,6 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="signInButton:" destination="9HC-4z-wF7" eventType="touchUpInside" id="dug-ov-zwD"/>
                                             <segue destination="yi8-g9-H7r" kind="show" id="Bes-XW-t7p"/>
                                         </connections>
                                     </button>

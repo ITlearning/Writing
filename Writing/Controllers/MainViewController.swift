@@ -1,7 +1,7 @@
 //
 //  MainViewController.swift
 //  Writing
-//
+//  카테고리 설정 메인 뷰 컨트롤러
 //  Created by IT learning on 2021/08/09.
 //
 
@@ -10,13 +10,20 @@ import Firebase
 import Tabman
 import Pageboy
 
+// 하단 바를 세팅해주는 뷰 컨트롤러이다.
 class MainViewController: TabmanViewController {
-
+    
+    // 각종 기본 선언들
     private var viewControllers: Array<UIViewController> = []
-    
-    
     @IBOutlet weak var barBackground: UIView!
-    let barIcon = [UIImage(systemName: "house.fill"), UIImage(systemName: "photo.fill.on.rectangle.fill"), UIImage(systemName: "plus.app.fill"), UIImage(systemName: "number"), UIImage(systemName: "ellipsis")]
+    
+    let barIcon = [UIImage(systemName: "house.fill"),
+                   UIImage(systemName: "photo.fill.on.rectangle.fill"),
+                   UIImage(systemName: "plus.app.fill"),
+                   UIImage(systemName: "number"),
+                   UIImage(systemName: "ellipsis")
+    ]
+    
     let barText = ["홈", "사진", "글쓰기", "태그", "더 보기"]
     
     override func viewDidLoad() {
@@ -39,11 +46,11 @@ class MainViewController: TabmanViewController {
             button.selectedTintColor = #colorLiteral(red: 0.1181788589, green: 0.1181788589, blue: 0.1181788589, alpha: 1)
             button.imageContentMode = .scaleAspectFit
             
-            //button.imageViewSize = CGSize(width: 35, height: 35)
         }
         addBar(bar, dataSource: self, at: .bottom)
     }
     
+    //MARK: - 탭 바 세팅 메서드
     func viewSetting() {
         let home = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HomeView") as! HomeViewController
         let search = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchView") as! SearchViewController
@@ -72,6 +79,8 @@ class MainViewController: TabmanViewController {
     
 }
 
+
+//MARK: - 탭 바 익스텐션
 extension MainViewController: PageboyViewControllerDataSource, TMBarDataSource {
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
         return viewControllers.count

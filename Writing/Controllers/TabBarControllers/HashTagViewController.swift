@@ -1,7 +1,7 @@
 //
 //  HashTagViewController.swift
 //  Writing
-//
+//  해시태그 뷰 컨트롤러
 //  Created by IT learning on 2021/08/09.
 //
 
@@ -10,8 +10,13 @@ import Firebase
 import FirebaseFirestore
 import NotificationBannerSwift
 import Kingfisher
+
 class HashTagViewController: UIViewController {
 
+    //MARK: - Status Bar 색 설정
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // 라벨과 테이블 뷰
     @IBOutlet weak var viewMainName: UILabel!
@@ -25,12 +30,14 @@ class HashTagViewController: UIViewController {
     @IBOutlet weak var boringButton: UIButton!
     @IBOutlet weak var noneButton: UIButton!
     
-    
+    // 기본 변수들
     var writing: [Writing] = []
     var btnArray = [UIButton]()
     let dataBase = Firestore.firestore()
     var emotionStatus: String = "선택안됨"
     let storage = Storage.storage()
+    
+    //MARK: - 화면이 보일 때
     override func viewDidAppear(_ animated: Bool) {
         loadWriting()
     }
@@ -62,6 +69,7 @@ class HashTagViewController: UIViewController {
         originalUpdate()
     }
     
+    //MARK: - 쓰레기 버튼 클릭시
     @IBAction func buttonClicked(_ sender: UIButton) {
         //print(sender.tag)
         
@@ -70,6 +78,7 @@ class HashTagViewController: UIViewController {
         let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
             //(self.writing[sender.tag].time)
             
+            // 사진 먼저 삭제
             if let writingSender = Auth.auth().currentUser?.email {
                 self.dataBase.collection(writingSender).document(self.writing[sender.tag].documentID).delete() { err in
                     if let err = err {
@@ -80,6 +89,8 @@ class HashTagViewController: UIViewController {
                        
                     }
                 }
+                
+                // 뒤에 일기 삭제
                 self.writing[sender.tag].deleteID.delete { error in
                     if let error = error {
                         print("에러발생 \(error)")
@@ -89,12 +100,10 @@ class HashTagViewController: UIViewController {
                     }
                 }
                 
-                let point = sender.convert(CGPoint.zero, to: self.hashTagTableView)
                 self.writing.remove(at: sender.tag)
-                print(self.writing)
+
                 if self.emotionStatus == "선택안됨" {
                     self.originalUpdate()
-                    //self.hashTagTableView.reloadData()
                 } else {
                     self.update("emotion", emotionType: self.emotionStatus)
                     
@@ -117,7 +126,7 @@ class HashTagViewController: UIViewController {
     }
     
     
-    
+    //MARK: - 각 감정버튼 클릭 시
     @IBAction func sortButton(_ sender: UIButton) {
         for btn in btnArray {
          guard let button = sender as? UIButton else { return }
@@ -187,6 +196,7 @@ class HashTagViewController: UIViewController {
                                 
                                 if let writingText = data["writing"] as? String, let emotionSender = data["emotion"] as? String , let timeSender = data["time"] as? Double, let switchSender = data["switch"] as? String {
                                     cnt += 1
+                                    // 24시간제로 변경
                                     let date: DateFormatter = {
                                         let df = DateFormatter()
                                         df.locale = Locale(identifier: "ko_KR")
@@ -195,22 +205,27 @@ class HashTagViewController: UIViewController {
                                         return df
                                     }()
                                     
+                                    // 변경 후 적용
                                     let today = Int(timeSender)
                                     let timeInterval = TimeInterval(today)
                                     let day = Date(timeIntervalSince1970: timeInterval)
                                     let num = Int(date.string(from: day))!
-                                    //self.CircleStatus()
+
                                     if dayCount.contains(num) == false{
                                         dayCount.append(num)
                                     }
+                                    
+                                    
+                                    // 폰 기본 정보로 전달
                                     let UserDefaults = UserDefaults.standard
-                                    print("데이 카운트 : \(dayCount.count)")
                                     UserDefaults.set(dayCount.count ,forKey: "count")
                                     
                                     
+                                    // URL 생성
                                     let pathRef = self.storage.reference(withPath: "\(writingSender)/\(timeSender)")
                                     let makeurl = "https://firebasestorage.googleapis.com/v0/b/\(pathRef.bucket)/o/\(writingSender)%2F\(pathRef.name)?alt=media"
                                     
+                                    // writing에 일기 기본정보들 저장
                                     self.writing.append(Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: makeurl, deleteID: pathRef, switchID: switchSender))
                                     self.writing.sort(by: {$0.time < $1.time})
                                     self.hashTagTableView.reloadData()
@@ -219,15 +234,16 @@ class HashTagViewController: UIViewController {
                                     
                                 }
                             }
+                            // 일기가 없을 시
                             if cnt == 0 {
                                 self.writing.removeAll()
                                 self.hashTagTableView.reloadData()
                                 self.nothingText.text = "아무것도 작성하지 않았어요! 당신의 이야기를 적어주세요 😊"
                                 self.nothingText.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
                                 self.nothingText.numberOfLines = 0
+                                
                                 let UserDefaults = UserDefaults.standard
                                 UserDefaults.set(0 ,forKey: "count")
-                                print("데이카운트 0")
                             } else {
                                 self.nothingText.text = ""
                             }
@@ -262,7 +278,7 @@ class HashTagViewController: UIViewController {
                                     if emotionSender == emotionType {
                                         
                                         cnt += 1
-                                        
+                                        // 24시간제로 변경
                                         let date: DateFormatter = {
                                             let df = DateFormatter()
                                             df.locale = Locale(identifier: "ko_KR")
@@ -271,6 +287,7 @@ class HashTagViewController: UIViewController {
                                             return df
                                         }()
                                         
+                                        // 시간 적용
                                         let today = Int(timeSender)
                                         let timeInterval = TimeInterval(today)
                                         let day = Date(timeIntervalSince1970: timeInterval)
@@ -279,12 +296,16 @@ class HashTagViewController: UIViewController {
                                         if dayCount.contains(num) == false{
                                             dayCount.append(num)
                                         }
+                                        
+                                        // 폰 기본정보로 값 전달
                                         let UserDefaults = UserDefaults.standard
                                         UserDefaults.set(dayCount.count ,forKey: "count")
                                         
+                                        // URL 생성
                                         let pathRef = self.storage.reference(withPath: "\(writingSender)/\(timeSender)")
                                         let makeurl = "https://firebasestorage.googleapis.com/v0/b/\(pathRef.bucket)/o/\(writingSender)%2F\(pathRef.name)?alt=media"
                                         
+                                        // writing 정보 업데이트
                                         let newWriting = Writing(emtion: emotionSender, time: timeSender, writing: writingText, documentID: id, data: makeurl, deleteID: pathRef, switchID: switchSender)
                                         
                                         self.writing.append(newWriting)
@@ -297,6 +318,7 @@ class HashTagViewController: UIViewController {
                                     
                                 }
                             }
+                            // 일기가 없을 시
                             if cnt == 0 {
                                 self.writing.removeAll()
                                 self.hashTagTableView.reloadData()
@@ -345,6 +367,8 @@ extension HashTagViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textImageView.kf.indicatorType = .activity
         let cache = ImageCache.default
         let retry = DelayRetryStrategy(maxRetryCount: 5, retryInterval: .seconds(2))
+        
+        // 일기에 사진이 있을 경우에만 이미지 뷰어 크기 설정
         if writing.switchID != "nil" {
             cache.retrieveImage(forKey: writing.data, options: nil) { c in
                 cell.ImageViewHeight.constant = CGFloat(360)
@@ -357,16 +381,12 @@ extension HashTagViewController: UITableViewDelegate, UITableViewDataSource {
                         cell.textImageView.kf.setImage(with: URL(string: writing.data), options: [.transition(.fade(0.2)), .forceTransition, .keepCurrentImageWhileLoading, .retryStrategy(retry)])
                     }
                 case .failure(let error):
-                    print("예아 제가 실패입니다")
-                    
+                    print("서버 통신 중 오류 발생")
                 }
             }
         } else {
             cell.ImageViewHeight.constant = CGFloat(0)
         }
-        
-
-        
         
             
         let date: DateFormatter = {

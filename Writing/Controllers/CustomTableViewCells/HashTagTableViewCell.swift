@@ -1,7 +1,7 @@
 //
 //  HashTagTableViewCell.swift
 //  Writing
-//
+//  해시태그 뷰 커스텀 셀
 //  Created by IT learning on 2021/08/11.
 //
 
@@ -16,17 +16,6 @@ class HashTagTableViewCell: UITableViewCell {
     @IBOutlet weak var trashButton: UIButton!
     @IBOutlet weak var textImageView: UIImageView!
     @IBOutlet weak var ImageViewHeight: NSLayoutConstraint!
-    
-    internal var aspectConstraint: NSLayoutConstraint? {
-        didSet {
-            if oldValue != nil {
-                textImageView.removeConstraint(oldValue!)
-            }
-            if aspectConstraint != nil {
-                textImageView.addConstraint(aspectConstraint!)
-            }
-        }
-    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -47,15 +36,6 @@ class HashTagTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    
-    func setImageView(image: UIImage) {
-        let aspect = image.size.width / image.size.height
-        let constraint = NSLayoutConstraint(item: textImageView, attribute: .width, relatedBy: .equal, toItem: textImageView, attribute: .height, multiplier: aspect, constant: 0)
-        constraint.priority = UILayoutPriority(rawValue: 999)
-        aspectConstraint = constraint
-        textImageView.image = image
-        
     }
     
 }

@@ -1,7 +1,7 @@
 //
 //  PlusViewController.swift
 //  Writing
-//
+//  글쓰기 뷰 컨트롤러
 //  Created by IT learning on 2021/08/09.
 //
 
@@ -11,8 +11,13 @@ import Firebase
 import NotificationBannerSwift
 import YPImagePicker
 import SwiftOverlays
+
 class PlusViewController: UIViewController, UITextViewDelegate {
 
+    //MARK: - Status Bar 색 설정
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // UITextView
     @IBOutlet weak var writingTextField: UITextView!
@@ -102,6 +107,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         noneButton.layer.cornerRadius = 20
     }
     
+    //MARK: - 사진 업로드 메서드
     func uploadImage(img: UIImage, time: Double) {
         let text = "사진 업로드 중.."
         self.showWaitOverlayWithText(text)
@@ -110,7 +116,6 @@ class PlusViewController: UIViewController, UITextViewDelegate {
         
         guard var filePath = Auth.auth().currentUser?.email else { return }
         filePath += "/\(time)"
-        print("FilePath: \(filePath)")
         let metaData = StorageMetadata()
         metaData.contentType = "image/png"
         storage.reference().child(filePath).putData(data, metadata:  metaData) {
@@ -123,7 +128,6 @@ class PlusViewController: UIViewController, UITextViewDelegate {
                 banner.show()
                 self.writingTextField.text = ""
                 self.selectImageView.image = nil
-                print("성공!")
             }
         }
     }
@@ -158,11 +162,6 @@ class PlusViewController: UIViewController, UITextViewDelegate {
                             let banner = NotificationBanner(title: "등록 성공!", subtitle: "소중한 하루정리를 안전하게 업로드했어요! 👍🏻",style: .success)
                                 banner.show()
                         }
-
-                        
-                        
-                        
-                        print("데이터 전송 성공!")
                     }
                 }
             } else {
@@ -198,7 +197,7 @@ class PlusViewController: UIViewController, UITextViewDelegate {
     }
     
     
-    
+    //MARK: - 사진 선택 버튼
     @IBAction func photoSelectButton(_ sender: UIButton) {
         let picker = YPImagePicker()
         

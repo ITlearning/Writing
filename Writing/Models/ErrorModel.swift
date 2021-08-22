@@ -1,7 +1,7 @@
 //
 //  ErrorModel.swift
 //  Writing
-//
+//  에러 한글화 모델
 //  Created by IT learning on 2021/08/09.
 //
 
