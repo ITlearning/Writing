@@ -1,5 +1,7 @@
 ![라이팅 배너](https://user-images.githubusercontent.com/11778058/130311032-65dcc437-1f12-4e0c-a77b-7db556a2a4a2.png)
 
+**회고글** : **['Writing' 앱 제작기](https://velog.io/@kirri1124/Writing-%EC%95%B1-%EC%A0%9C%EC%9E%91%EA%B8%B0-yk15rpte)**
+
 ## 개요
 첫 개인 프로젝트인 '라이팅' 이라는 앱의 이름은, "쓰다, 글쓰기"라는 뜻의 명사인 **Writing** 과, "빛,조명"이라는 뜻의 명사인 **Lighting** 의 두가지 뜻을 가진 이름입니다.
 
